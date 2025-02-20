@@ -13,6 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 '<i class="fas fa-bars"></i>';
             document.body.style.overflow = isMenuOpen ? 'hidden' : '';
         });
+
+        // メニュー項目をクリックしたらメニューを閉じる
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = '';
+                isMenuOpen = false;
+            });
+        });
     }
 
     // 画面サイズが変更された時にメニューを閉じる
