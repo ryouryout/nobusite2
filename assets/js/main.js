@@ -432,39 +432,36 @@ function initializePageSpecificBehavior() {
 function initializeMobileMenu() {
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
-    
-    function toggleMenu() {
-        navLinks.classList.toggle('active');
-        const isOpen = navLinks.classList.contains('active');
-        mobileMenuButton.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-    }
-    
-    mobileMenuButton.addEventListener('click', toggleMenu);
-    
-    // メニュー項目をクリックしたらメニューを閉じる
-    navLinks.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                toggleMenu();
+    let isMenuOpen = false;
+
+    if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', function() {
+            isMenuOpen = !isMenuOpen;
+            navLinks.classList.toggle('active');
+            mobileMenuButton.innerHTML = isMenuOpen ? 
+                '<i class="fas fa-times"></i>' : 
+                '<i class="fas fa-bars"></i>';
+            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+        });
+
+        // メニュー項目をクリックしたらメニューを閉じる
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = '';
+                isMenuOpen = false;
+            });
+        });
+
+        // 画面サイズが変更されたときにメニューを閉じる
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                navLinks.classList.remove('active');
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = '';
+                isMenuOpen = false;
             }
         });
-    });
-    
-    // 画面外をクリックしたらメニューを閉じる
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768 && 
-            !navLinks.contains(e.target) && 
-            !mobileMenuButton.contains(e.target)) {
-            navLinks.classList.remove('active');
-            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-        }
-    });
-    
-    // リサイズ時の処理
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            navLinks.classList.remove('active');
-            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-        }
-    });
+    }
 } 

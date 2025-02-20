@@ -22,6 +22,46 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
+        @media (max-width: 768px) {
+            .messages-layout {
+                grid-template-columns: 1fr;
+                height: calc(100vh - 120px);
+            }
+
+            .messages-sidebar {
+                display: none;
+            }
+
+            .messages-sidebar.active {
+                display: flex;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: #ffffff;
+                z-index: 100;
+            }
+
+            .chat-container {
+                height: 100%;
+            }
+
+            .chat-messages {
+                height: calc(100vh - 240px);
+            }
+
+            .chat-input {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: #ffffff;
+                padding: 1rem;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            }
+        }
+
         .messages-sidebar {
             border-right: 1px solid #e2e8f0;
             display: flex;
@@ -68,6 +108,7 @@
             border-radius: 0.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            background: #ffffff;
         }
 
         .message-thread:hover {
@@ -75,7 +116,7 @@
         }
 
         .message-thread.active {
-            background: #f1f5f9;
+            background: #e8f4ff;
         }
 
         .thread-avatar {
@@ -149,6 +190,20 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            background: #ffffff;
+        }
+
+        .show-sidebar {
+            display: none;
+            margin-right: 1rem;
+        }
+
+        .close-sidebar {
+            display: none;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 101;
         }
 
         .chat-user {
@@ -181,6 +236,7 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            background: #f8fafc;
         }
 
         .message-date {
@@ -209,10 +265,11 @@
         }
 
         .message-content {
-            background: #f1f5f9;
+            background: #ffffff;
             padding: 0.75rem 1rem;
             border-radius: 1rem;
             position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .message.sent .message-content {
@@ -296,6 +353,33 @@
             max-width: 300px;
             margin: 0 auto;
         }
+
+        @media (max-width: 768px) {
+            .show-sidebar,
+            .close-sidebar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .show-sidebar:hover,
+            .close-sidebar:hover {
+                background: #f8fafc;
+            }
+
+            .show-sidebar i,
+            .close-sidebar i {
+                font-size: 1.2rem;
+                color: #64748b;
+            }
+        }
     </style>
 </head>
 <body>
@@ -334,6 +418,9 @@
                     <div class="message-threads" id="message-threads">
                         <!-- スレッドは動的に追加されます -->
                     </div>
+                    <button class="btn btn-icon close-sidebar" id="close-sidebar" style="display: none;">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </aside>
 
                 <div class="messages-main">
@@ -344,6 +431,9 @@
                     </div>
                     <div class="chat-container" id="chat-container" style="display: none; height: 100%; display: flex; flex-direction: column;">
                         <div class="chat-header">
+                            <button class="btn btn-icon show-sidebar" id="show-sidebar" style="display: none;">
+                                <i class="fas fa-bars"></i>
+                            </button>
                             <div class="chat-user">
                                 <img src="" alt="ユーザーアバター" id="chat-user-avatar">
                                 <div class="chat-user-info">
@@ -453,6 +543,32 @@
         const sendButton = document.getElementById('send-button');
         const messageSearch = document.getElementById('message-search');
 
+        // モバイルナビゲーション
+        const showSidebarBtn = document.getElementById('show-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+        const messagesSidebar = document.querySelector('.messages-sidebar');
+
+        function updateMobileLayout() {
+            const isMobile = window.innerWidth <= 768;
+            showSidebarBtn.style.display = isMobile ? 'block' : 'none';
+            closeSidebarBtn.style.display = isMobile ? 'block' : 'none';
+            
+            if (!isMobile && messagesSidebar.classList.contains('active')) {
+                messagesSidebar.classList.remove('active');
+            }
+        }
+
+        showSidebarBtn.addEventListener('click', () => {
+            messagesSidebar.classList.add('active');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            messagesSidebar.classList.remove('active');
+        });
+
+        window.addEventListener('resize', updateMobileLayout);
+        document.addEventListener('DOMContentLoaded', updateMobileLayout);
+
         // スレッドの作成
         function createThreadElement(user) {
             const thread = document.createElement('div');
@@ -496,6 +612,11 @@
 
             // メッセージ履歴の表示
             displayChatHistory(user.id);
+
+            // モバイル表示時はサイドバーを閉じる
+            if (window.innerWidth <= 768) {
+                messagesSidebar.classList.remove('active');
+            }
         }
 
         // メッセージ履歴の表示
