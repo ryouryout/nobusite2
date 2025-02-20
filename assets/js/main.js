@@ -283,39 +283,71 @@ function checkLoginStatus() {
 
 // ナビゲーションの更新
 function updateNavigation(isInPagesDir = false) {
-    const navLinks = document.querySelector('.nav-links');
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const prefix = isInPagesDir ? '' : 'pages/';
+    const navLinks = document.querySelector('.nav-links');
+    const basePath = isInPagesDir ? '../' : '';
     
     if (isLoggedIn) {
         navLinks.innerHTML = `
-            <a href="${prefix}matches.html" class="nav-link"><i class="fas fa-users"></i><span>お相手</span></a>
-            <a href="${prefix}messages.html" class="nav-link"><i class="fas fa-comments"></i><span>メッセージ</span></a>
-            <a href="${prefix}events.html" class="nav-link"><i class="fas fa-calendar"></i><span>イベント</span></a>
-            <a href="${prefix}community.html" class="nav-link"><i class="fas fa-globe"></i><span>コミュニティ</span></a>
-            <a href="${prefix}search.html" class="nav-link"><i class="fas fa-search"></i><span>検索</span></a>
-            <a href="${prefix}mypage.html" class="nav-link"><i class="fas fa-user"></i><span>マイページ</span></a>
-            <a href="${prefix}safety.html" class="nav-link"><i class="fas fa-shield-alt"></i><span>安全ガイド</span></a>
-            <a href="#" class="nav-link btn-logout" onclick="handleLogout(event)"><i class="fas fa-sign-out-alt"></i><span>ログアウト</span></a>
+            <a href="${basePath}pages/matches.html" class="nav-link">
+                <i class="fas fa-users"></i>
+                <span>お相手</span>
+            </a>
+            <a href="${basePath}pages/messages.html" class="nav-link">
+                <i class="fas fa-comments"></i>
+                <span>メッセージ</span>
+            </a>
+            <a href="${basePath}pages/events.html" class="nav-link">
+                <i class="fas fa-calendar"></i>
+                <span>イベント</span>
+            </a>
+            <a href="${basePath}pages/community.html" class="nav-link">
+                <i class="fas fa-globe"></i>
+                <span>コミュニティ</span>
+            </a>
+            <a href="${basePath}pages/mypage.html" class="nav-link">
+                <i class="fas fa-user"></i>
+                <span>マイページ</span>
+            </a>
+            <a href="${basePath}pages/safety.html" class="nav-link">
+                <i class="fas fa-shield-alt"></i>
+                <span>安全ガイド</span>
+            </a>
+            <a href="#" class="nav-link btn-logout" onclick="handleLogout(event)">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>ログアウト</span>
+            </a>
         `;
     } else {
-        const featuresLink = isInPagesDir ? '../index.html#features' : '#features';
-        const pricingLink = isInPagesDir ? '../index.html#pricing' : '#pricing';
-        
         navLinks.innerHTML = `
-            <a href="${featuresLink}" class="nav-link"><i class="fas fa-star"></i><span>特徴</span></a>
-            <a href="${pricingLink}" class="nav-link"><i class="fas fa-tags"></i><span>料金</span></a>
-            <a href="${prefix}safety.html" class="nav-link"><i class="fas fa-shield-alt"></i><span>安全ガイド</span></a>
-            <a href="${prefix}login.html" class="nav-link btn-login"><i class="fas fa-sign-in-alt"></i><span>ログイン</span></a>
-            <a href="${prefix}register.html" class="nav-link btn-register"><i class="fas fa-user-plus"></i><span>新規登録</span></a>
+            <a href="${isInPagesDir ? '../' : ''}#features" class="nav-link">
+                <i class="fas fa-star"></i>
+                <span>特徴</span>
+            </a>
+            <a href="${isInPagesDir ? '../' : ''}#pricing" class="nav-link">
+                <i class="fas fa-tags"></i>
+                <span>料金</span>
+            </a>
+            <a href="${basePath}pages/safety.html" class="nav-link">
+                <i class="fas fa-shield-alt"></i>
+                <span>安全ガイド</span>
+            </a>
+            <a href="${basePath}pages/login.html" class="nav-link btn-login">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>ログイン</span>
+            </a>
+            <a href="${basePath}pages/register.html" class="nav-link btn-register">
+                <i class="fas fa-user-plus"></i>
+                <span>新規登録</span>
+            </a>
         `;
     }
 
-    // 現在のページに対応するリンクをアクティブにする
+    // 現在のページに応じてactiveクラスを設定
     const currentPath = window.location.pathname;
-    navLinks.querySelectorAll('a').forEach(link => {
-        const linkPath = link.getAttribute('href');
-        if (linkPath && (currentPath.endsWith(linkPath) || currentPath.includes(linkPath.split('#')[0]))) {
+    const links = navLinks.querySelectorAll('.nav-link');
+    links.forEach(link => {
+        if (link.getAttribute('href') && currentPath.includes(link.getAttribute('href'))) {
             link.classList.add('active');
         }
     });
@@ -365,80 +397,8 @@ function handleRegistration(form) {
 
 // ページ読み込み時の初期化
 document.addEventListener('DOMContentLoaded', function() {
-    const isInPagesDir = window.location.pathname.includes('/pages/');
-    updateNavigation(isInPagesDir);
-    
-    // モバイルメニューの初期化
-    const mobileMenuButton = document.querySelector('.mobile-menu-button');
-    const navLinks = document.querySelector('.nav-links');
-    let isMenuOpen = false;
-
-    if (mobileMenuButton) {
-        mobileMenuButton.addEventListener('click', function() {
-            isMenuOpen = !isMenuOpen;
-            navLinks.classList.toggle('active');
-            mobileMenuButton.innerHTML = isMenuOpen ? 
-                '<i class="fas fa-times"></i>' : 
-                '<i class="fas fa-bars"></i>';
-            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-            
-            // メニューが開いたときのアニメーション
-            if (isMenuOpen) {
-                navLinks.querySelectorAll('a').forEach((link, index) => {
-                    link.style.animation = `slideIn 0.3s ease forwards ${index * 0.1}s`;
-                });
-            } else {
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.style.animation = '';
-                });
-            }
-        });
-
-        // メニュー項目をクリックしたらメニューを閉じる
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = '';
-                isMenuOpen = false;
-                
-                // アニメーションをリセット
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.style.animation = '';
-                });
-            });
-        });
-
-        // 画面の外側をクリックしたらメニューを閉じる
-        document.addEventListener('click', function(event) {
-            if (isMenuOpen && !event.target.closest('.nav-links') && !event.target.closest('.mobile-menu-button')) {
-                navLinks.classList.remove('active');
-                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = '';
-                isMenuOpen = false;
-                
-                // アニメーションをリセット
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.style.animation = '';
-                });
-            }
-        });
-    }
-
-    // 画面サイズが変更された時にメニューを閉じる
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768 && isMenuOpen) {
-            navLinks.classList.remove('active');
-            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-            document.body.style.overflow = '';
-            isMenuOpen = false;
-            
-            // アニメーションをリセット
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.style.animation = '';
-            });
-        }
-    });
+    initializeMobileMenu();
+    updateNavigation(window.location.pathname.includes('/pages/'));
 });
 
 // ページ固有の初期化処理
@@ -472,58 +432,39 @@ function initializePageSpecificBehavior() {
 function initializeMobileMenu() {
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
-    let isMenuOpen = false;
-
-    if (!mobileMenuButton || !navLinks) return;
-
+    
     function toggleMenu() {
-        isMenuOpen = !isMenuOpen;
         navLinks.classList.toggle('active');
-        mobileMenuButton.innerHTML = isMenuOpen ? 
-            '<i class="fas fa-times"></i>' : 
-            '<i class="fas fa-bars"></i>';
-        document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-
-        if (isMenuOpen) {
-            // メニューが開いたときのアニメーション
-            const links = navLinks.querySelectorAll('a');
-            links.forEach((link, index) => {
-                link.style.animation = `slideIn 0.3s ease forwards ${index * 0.1}s`;
-            });
-        }
+        const isOpen = navLinks.classList.contains('active');
+        mobileMenuButton.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
     }
-
-    // メニューボタンのクリックイベント
+    
     mobileMenuButton.addEventListener('click', toggleMenu);
-
-    // メニュー項目のクリックイベント
-    navLinks.querySelectorAll('a').forEach(link => {
+    
+    // メニュー項目をクリックしたらメニューを閉じる
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            if (isMenuOpen) {
+            if (window.innerWidth <= 768) {
                 toggleMenu();
             }
         });
     });
-
-    // 画面外クリックでメニューを閉じる
+    
+    // 画面外をクリックしたらメニューを閉じる
     document.addEventListener('click', (e) => {
-        if (isMenuOpen && 
+        if (window.innerWidth <= 768 && 
             !navLinks.contains(e.target) && 
             !mobileMenuButton.contains(e.target)) {
-            toggleMenu();
+            navLinks.classList.remove('active');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
         }
     });
-
-    // 画面サイズ変更時の処理
+    
+    // リサイズ時の処理
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 768 && isMenuOpen) {
-            toggleMenu();
+        if (window.innerWidth > 768) {
+            navLinks.classList.remove('active');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
         }
     });
-}
-
-// ページ読み込み時に初期化
-document.addEventListener('DOMContentLoaded', () => {
-    initializeMobileMenu();
-    updateNavigation();
-}); 
+} 
