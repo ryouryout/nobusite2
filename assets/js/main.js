@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
+    const navLinksItems = navLinks.querySelectorAll('.nav-link');
     const body = document.body;
     let isMenuOpen = false;
 
@@ -16,11 +17,16 @@ document.addEventListener('DOMContentLoaded', function() {
         mobileMenuButton.classList.toggle('active');
         overlay.classList.toggle('active');
         body.classList.toggle('menu-open');
-        
-        // メニューアイコンの切り替え
-        mobileMenuButton.innerHTML = isMenuOpen ? 
-            '<i class="fas fa-times"></i>' : 
-            '<i class="fas fa-bars"></i>';
+
+        // アニメーションの適用
+        navLinksItems.forEach((link, index) => {
+            link.style.setProperty('--index', index);
+            if (isMenuOpen) {
+                link.style.transitionDelay = `${index * 0.1}s`;
+            } else {
+                link.style.transitionDelay = '0s';
+            }
+        });
     }
 
     function closeMenu() {
@@ -30,7 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenuButton.classList.remove('active');
             overlay.classList.remove('active');
             body.classList.remove('menu-open');
-            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+
+            navLinksItems.forEach(link => {
+                link.style.transitionDelay = '0s';
+            });
         }
     }
 
@@ -41,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // メニュー項目をクリックしたらメニューを閉じる
-        navLinks.querySelectorAll('a').forEach(link => {
+        navLinksItems.forEach(link => {
             link.addEventListener('click', closeMenu);
         });
 
