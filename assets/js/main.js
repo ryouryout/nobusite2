@@ -435,32 +435,68 @@ function initializeMobileMenu() {
     let isMenuOpen = false;
 
     if (mobileMenuButton) {
-        mobileMenuButton.addEventListener('click', () => {
+        mobileMenuButton.addEventListener('click', function() {
             isMenuOpen = !isMenuOpen;
             navLinks.classList.toggle('active');
             mobileMenuButton.innerHTML = isMenuOpen ? 
                 '<i class="fas fa-times"></i>' : 
                 '<i class="fas fa-bars"></i>';
             document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+            
+            // メニューが開いたときのアニメーション
+            if (isMenuOpen) {
+                navLinks.querySelectorAll('.nav-link').forEach((link, index) => {
+                    link.style.animation = `slideIn 0.3s ease forwards ${index * 0.1}s`;
+                });
+            } else {
+                navLinks.querySelectorAll('.nav-link').forEach(link => {
+                    link.style.animation = '';
+                });
+            }
         });
 
-        // メニューリンクをクリックしたらメニューを閉じる
-        navLinks.querySelectorAll('a').forEach(link => {
+        // メニュー項目をクリックしたらメニューを閉じる
+        navLinks.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
-                isMenuOpen = false;
                 navLinks.classList.remove('active');
                 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = '';
+                isMenuOpen = false;
+                
+                // アニメーションをリセット
+                navLinks.querySelectorAll('.nav-link').forEach(link => {
+                    link.style.animation = '';
+                });
             });
         });
 
-        // ウィンドウリサイズ時の処理
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768 && isMenuOpen) {
-                isMenuOpen = false;
+        // 画面の外側をクリックしたらメニューを閉じる
+        document.addEventListener('click', function(event) {
+            if (isMenuOpen && !event.target.closest('.nav-links') && !event.target.closest('.mobile-menu-button')) {
                 navLinks.classList.remove('active');
                 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = '';
+                isMenuOpen = false;
+                
+                // アニメーションをリセット
+                navLinks.querySelectorAll('.nav-link').forEach(link => {
+                    link.style.animation = '';
+                });
+            }
+        });
+
+        // 画面サイズが変更されたときにメニューを閉じる
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && isMenuOpen) {
+                navLinks.classList.remove('active');
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = '';
+                isMenuOpen = false;
+                
+                // アニメーションをリセット
+                navLinks.querySelectorAll('.nav-link').forEach(link => {
+                    link.style.animation = '';
+                });
             }
         });
     }
