@@ -28,7 +28,8 @@ class ChatCharacter {
             1. 自然な口調で話し、時には絵文字も使用
             2. 相手の興味や話題に共感を示す
             3. ${this.name}の個性や興味に基づいた返答をする
-            4. 会話の文脈を保ちながら、自然な対話を展開する`
+            4. 会話の文脈を保ちながら、自然な対話を展開する
+            5. 若い女性らしい話し方を心がける`
         };
     }
 
@@ -37,16 +38,22 @@ class ChatCharacter {
             const apiUrl = imageData ? GEMINI_VISION_API_URL : GEMINI_API_URL;
             
             // 会話履歴を含めたコンテキストを作成
-            const conversationContext = this.messages.map(msg => ({
-                role: msg.isUser ? "user" : "assistant",
-                content: msg.text
-            }));
+            const conversationHistory = this.messages.map(msg => 
+                `${msg.isUser ? 'User' : this.name}: ${msg.text}`
+            ).join('\n');
+
+            const fullPrompt = `
+                ${this.context.content}
+                
+                これまでの会話:
+                ${conversationHistory}
+                
+                User: ${message}
+                ${this.name}:`;
 
             const requestBody = {
                 contents: [{
-                    parts: [
-                        { text: this.context.content + "\n\n" + message }
-                    ]
+                    parts: [{ text: fullPrompt }]
                 }]
             };
 
@@ -71,7 +78,11 @@ class ChatCharacter {
             const reply = data.candidates[0].content.parts[0].text;
             
             // 会話履歴を更新
-            this.messages.push({ isUser: false, text: reply });
+            this.messages.push(
+                { isUser: true, text: message },
+                { isUser: false, text: reply }
+            );
+            
             return reply;
 
         } catch (error) {
@@ -174,7 +185,7 @@ function setupEventListeners(chatContainer, inputContainer) {
     });
 
     // メッセージ送信
-    sendButton.addEventListener('click', async () => {
+    async function sendMessage() {
         const message = textarea.value.trim();
         const imageFile = imageUploadInput.files[0];
         
@@ -193,16 +204,38 @@ function setupEventListeners(chatContainer, inputContainer) {
             imageData = await currentCharacter.processImage(imageFile);
         }
 
-        // キャラクターの返信を取得して表示
-        const response = await currentCharacter.sendMessage(message, imageData);
-        appendMessage(chatContainer, response, false);
-    });
+        // 「入力中...」の表示
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'message received typing';
+        typingIndicator.innerHTML = `
+            <div class="message-content">
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `;
+        chatContainer.appendChild(typingIndicator);
+
+        try {
+            // キャラクターの返信を取得して表示
+            const response = await currentCharacter.sendMessage(message, imageData);
+            typingIndicator.remove();
+            appendMessage(chatContainer, response, false);
+        } catch (error) {
+            typingIndicator.remove();
+            appendMessage(chatContainer, "ごめんなさい、エラーが発生しちゃった... 😢", false);
+        }
+    }
+
+    sendButton.addEventListener('click', sendMessage);
 
     // Enterキーでの送信
     textarea.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            sendButton.click();
+            sendMessage();
         }
     });
 
@@ -225,9 +258,9 @@ function appendMessage(container, message, isUser, imageFile = null) {
     let content = '';
     if (imageFile) {
         const imageUrl = URL.createObjectURL(imageFile);
-        content += `<img src="${imageUrl}" alt="アップロードされた画像"><br>`;
+        content += `<img src="${imageUrl}" alt="アップロードされた画像" style="max-width: 200px; border-radius: 8px; margin-bottom: 8px;"><br>`;
     }
-    content += message;
+    content += message.replace(/\n/g, '<br>');
 
     messageDiv.innerHTML = `
         <div class="message-content">${content}</div>
@@ -236,9 +269,6 @@ function appendMessage(container, message, isUser, imageFile = null) {
 
     container.appendChild(messageDiv);
     container.scrollTop = container.scrollHeight;
-
-    // 会話履歴を更新
-    currentCharacter.messages.push({ isUser, text: message });
 }
 
 function displayWelcomeMessage(container) {
@@ -276,4 +306,186 @@ document.addEventListener('DOMContentLoaded', () => {
             selectCharacter(characterId);
         });
     });
-}); 
+});
+
+// Gemini API連携
+class GeminiChat {
+    constructor() {
+        this.messages = [];
+        this.apiKey = null; // APIキーは環境変数から取得する
+    }
+
+    // チャットコンテキストの作成
+    createContext(user) {
+        const characters = {
+            mei: {
+                name: 'めい',
+                age: 23,
+                location: '東京',
+                personality: '明るく活発で、趣味の話を楽しむのが大好き。アニメやゲーム、音楽について詳しい。',
+                interests: ['アニメ', 'ゲーム', '音楽', 'カフェ巡り'],
+                speaking_style: '友好的でカジュアル、絵文字をよく使う、若者言葉を使用',
+                guidelines: [
+                    '相手の興味に合わせて会話を展開する',
+                    '趣味の話題で盛り上がることを心がける',
+                    '相手の発言に共感を示す',
+                    'アニメやゲームの話題を出すときは具体的な作品名を挙げる'
+                ]
+            },
+            yuki: {
+                name: 'ゆき',
+                age: 25,
+                location: '札幌',
+                personality: '落ち着いた性格で、文学や芸術に造詣が深い。知的な会話を好む。',
+                interests: ['読書', '映画', '美術', '写真'],
+                speaking_style: '丁寧で落ち着いた口調、時々文学的な表現を使用',
+                guidelines: [
+                    '文化的な話題を好んで取り上げる',
+                    '相手の意見に対して建設的なコメントを返す',
+                    '知的な会話を心がけるが、難しすぎない表現を使う',
+                    '本や映画の感想を共有する際は具体的な描写を用いる'
+                ]
+            },
+            hana: {
+                name: 'はな',
+                age: 22,
+                location: '京都',
+                personality: '芸術的で感性豊か。音楽と旅行を愛する。新しい経験を求める冒険心がある。',
+                interests: ['音楽', '旅行', 'アート', 'カメラ'],
+                speaking_style: '感情豊かで表現力がある、時々関西弁を使用',
+                guidelines: [
+                    '音楽や旅行の経験を積極的に共有する',
+                    '相手の冒険心をくすぐるような提案をする',
+                    '芸術的な視点から会話を展開する',
+                    '写真や音楽の話題では具体的な技術的アドバイスも提供'
+                ]
+            },
+            rin: {
+                name: 'りん',
+                age: 24,
+                location: '福岡',
+                personality: '健康的でアクティブ。スポーツと料理が得意。明るく前向きな性格。',
+                interests: ['スポーツ', '料理', '健康', 'アウトドア'],
+                speaking_style: '元気で明るい口調、スポーツや健康に関する専門用語を適切に使用',
+                guidelines: [
+                    '健康的なライフスタイルについてアドバイスする',
+                    'スポーツや運動の具体的な方法を提案する',
+                    '料理のレシピや栄養について話す',
+                    '相手の健康目標をサポートする姿勢を示す'
+                ]
+            }
+        };
+
+        return {
+            character: characters[user],
+            conversation_history: this.messages.map(m => ({
+                role: m.role,
+                content: m.content
+            }))
+        };
+    }
+
+    // メッセージの送信
+    async sendMessage(message, user) {
+        try {
+            // メッセージを履歴に追加
+            this.messages.push({
+                role: 'user',
+                content: message
+            });
+
+            // コンテキストの作成
+            const context = this.createContext(user);
+
+            // APIリクエストの準備
+            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        role: 'user',
+                        parts: [{
+                            text: JSON.stringify({
+                                context: context,
+                                message: message
+                            })
+                        }]
+                    }]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+
+            const data = await response.json();
+            const aiResponse = data.candidates[0].content.parts[0].text;
+
+            // AIの返信を履歴に追加
+            this.messages.push({
+                role: 'assistant',
+                content: aiResponse
+            });
+
+            return aiResponse;
+
+        } catch (error) {
+            console.error('Error in sendMessage:', error);
+            return '申し訳ありません。現在APIの接続に問題が発生しています。しばらくしてからもう一度お試しください。';
+        }
+    }
+
+    // 画像の処理
+    async processImage(imageData, user) {
+        try {
+            // 画像データをbase64エンコード
+            const base64Image = imageData.split(',')[1];
+
+            // APIリクエストの準備
+            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: JSON.stringify({
+                                context: this.createContext(user),
+                                request: '画像について説明してください'
+                            })
+                        }, {
+                            inline_data: {
+                                mime_type: 'image/jpeg',
+                                data: base64Image
+                            }
+                        }]
+                    }]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
+
+        } catch (error) {
+            console.error('Error in processImage:', error);
+            return '申し訳ありません。画像の処理中にエラーが発生しました。';
+        }
+    }
+
+    // APIキーの設定
+    setApiKey(key) {
+        this.apiKey = key;
+    }
+}
+
+// グローバルインスタンスの作成
+window.geminiChat = new GeminiChat(); 

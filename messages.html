@@ -6,6 +6,26 @@
     <title>メッセージ - マッチングサイト</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 4px 8px;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--color-gray-400);
+            border-radius: 50%;
+            animation: typing 1s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -14,28 +34,31 @@
                 <i class="fas fa-heart"></i>
                 <span>マッチング</span>
             </a>
+            <nav class="nav-links">
+                <a href="../index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </a>
+                <a href="matches.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>お相手</span>
+                </a>
+                <a href="messages.html" class="nav-link active">
+                    <i class="fas fa-comments"></i>
+                    <span>メッセージ</span>
+                </a>
+                <a href="mypage.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>マイページ</span>
+                </a>
+            </nav>
             <button class="mobile-menu-button">
                 <i class="fas fa-bars"></i>
             </button>
-            <nav class="nav-links"></nav>
         </div>
     </header>
 
     <div class="page-container">
-        <div class="tabs-container">
-            <div class="tabs">
-                <button class="tab" data-tab="messages-tab">
-                    <i class="fas fa-comments"></i>
-                    <span>メッセージ</span>
-                </button>
-                <button class="tab" data-tab="likes-tab">
-                    <i class="fas fa-star"></i>
-                    <span>いいね</span>
-                    <span class="tab-badge">12</span>
-                </button>
-            </div>
-        </div>
-
         <div class="messages-layout">
             <div class="user-selection">
                 <h3>チャット相手を選択</h3>
@@ -69,16 +92,8 @@
                 </div>
             </div>
 
-            <div id="messages-tab" class="tab-content">
+            <div class="chat-container">
                 <div class="chat-messages"></div>
-            </div>
-
-            <div id="likes-tab" class="tab-content">
-                <div class="likes-container">
-                    <h3>いいね！一覧</h3>
-                    <p>あなたにいいね！をした人が表示されます</p>
-                    <!-- いいね一覧のコンテンツ -->
-                </div>
             </div>
         </div>
     </div>

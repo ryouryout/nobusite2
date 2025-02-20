@@ -1,173 +1,188 @@
 // モバイルメニューの制御
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     initializeNavigation();
     initializeChat();
     initializeScrollBehavior();
     initializeTabs();
 });
 
+// ナビゲーション初期化
 function initializeNavigation() {
-    const menuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
-    const body = document.body;
+    const userSelection = document.querySelector('.user-selection');
 
-    // メニューの状態
-    let isMenuOpen = false;
-
-    // メニューを開く
-    function openMenu() {
-        isMenuOpen = true;
-        menuButton.classList.add('active');
-        navLinks.classList.add('active');
-        body.classList.add('menu-open');
-        
-        // スライドインアニメーション
-        navLinks.style.transform = 'translateX(0)';
-        navLinks.style.opacity = '1';
-    }
-
-    // メニューを閉じる
-    function closeMenu() {
-        isMenuOpen = false;
-        menuButton.classList.remove('active');
-        navLinks.classList.remove('active');
-        body.classList.remove('menu-open');
-        
-        // スライドアウトアニメーション
-        navLinks.style.transform = 'translateX(100%)';
-        navLinks.style.opacity = '0';
-    }
-
-    // メニューボタンのクリックイベント
-    menuButton.addEventListener('click', () => {
-        if (isMenuOpen) {
-            closeMenu();
-        } else {
-            openMenu();
-        }
-    });
-
-    // メニュー項目のクリック時に自動で閉じる
-    navLinks.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            closeMenu();
+    if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', () => {
+            userSelection.classList.toggle('active');
+            mobileMenuButton.classList.toggle('active');
         });
-    });
+    }
 
-    // 画面外クリックで閉じる
-    document.addEventListener('click', (e) => {
-        if (isMenuOpen && !navLinks.contains(e.target) && !menuButton.contains(e.target)) {
-            closeMenu();
-        }
-    });
-
-    // ESCキーで閉じる
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isMenuOpen) {
-            closeMenu();
+    // 現在のページのナビゲーションリンクをアクティブに
+    const currentPath = window.location.pathname;
+    const navLinkElements = document.querySelectorAll('.nav-link');
+    navLinkElements.forEach(link => {
+        if (link.getAttribute('href').includes(currentPath)) {
+            link.classList.add('active');
         }
     });
 }
 
+// チャット初期化
 function initializeChat() {
-    const textarea = document.querySelector('.chat-input-field');
-    const chatMessages = document.querySelector('.chat-messages');
-    const sendButton = document.querySelector('.chat-send-button');
-    const backButton = document.querySelector('.back-button');
-    const userSelection = document.querySelector('.user-selection');
     const userCards = document.querySelectorAll('.user-card');
-    const tabs = document.querySelectorAll('.tab');
+    const chatMessages = document.querySelector('.chat-messages');
+    const chatContainer = document.querySelector('.chat-container');
+    let currentUser = null;
 
-    if (textarea) {
-        // メッセージ入力欄の自動リサイズ
-        function adjustTextareaHeight() {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
-        }
+    // チャット入力フィールドの作成
+    const chatInputContainer = document.createElement('div');
+    chatInputContainer.className = 'chat-input';
+    chatInputContainer.innerHTML = `
+        <input type="text" placeholder="メッセージを入力..." />
+        <button type="button">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    `;
+    chatContainer.appendChild(chatInputContainer);
 
-        textarea.addEventListener('input', adjustTextareaHeight);
-        textarea.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
+    const chatInput = chatInputContainer.querySelector('input');
+    const sendButton = chatInputContainer.querySelector('button');
 
-        // 初期の高さを設定
-        adjustTextareaHeight();
-    }
-
-    if (sendButton) {
-        sendButton.addEventListener('click', sendMessage);
-    }
-
-    if (backButton) {
-        backButton.addEventListener('click', () => {
-            userSelection.classList.add('active');
-        });
-    }
-
+    // ユーザーカードのクリックイベント
     userCards.forEach(card => {
         card.addEventListener('click', () => {
             userCards.forEach(c => c.classList.remove('active'));
             card.classList.add('active');
-            userSelection.classList.remove('active');
+            currentUser = card.dataset.user;
             
-            // ユーザー情報の更新
-            updateChatHeader(card);
+            // チャット履歴をクリア
+            chatMessages.innerHTML = '';
+            
+            // 初期メッセージを表示
+            appendMessage({
+                type: 'received',
+                content: getWelcomeMessage(currentUser),
+                avatar: card.querySelector('img').src
+            });
+
+            // モバイルでユーザー選択を閉じる
+            document.querySelector('.user-selection').classList.remove('active');
+            document.querySelector('.mobile-menu-button').classList.remove('active');
         });
     });
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-        });
-    });
-
+    // メッセージ送信処理
     function sendMessage() {
-        const message = textarea.value.trim();
-        if (!message) return;
+        const message = chatInput.value.trim();
+        if (message && currentUser) {
+            // ユーザーのメッセージを表示
+            appendMessage({
+                type: 'sent',
+                content: message
+            });
 
-        const time = new Date().toLocaleTimeString('ja-JP', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
+            // 入力フィールドをクリア
+            chatInput.value = '';
+
+            // 返信中のインジケータを表示
+            showTypingIndicator();
+
+            // AIの返信を取得（実際のAPIコールはここで行う）
+            setTimeout(() => {
+                hideTypingIndicator();
+                appendMessage({
+                    type: 'received',
+                    content: getAIResponse(message, currentUser),
+                    avatar: document.querySelector(`.user-card[data-user="${currentUser}"] img`).src
+                });
+            }, 1000 + Math.random() * 1000); // ランダムな遅延を追加
+        }
+    }
+
+    // Enter キーでメッセージを送信
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    // 送信ボタンクリックでメッセージを送信
+    sendButton.addEventListener('click', sendMessage);
+
+    // メッセージの追加
+    function appendMessage({ type, content, avatar }) {
+        const messageElement = document.createElement('div');
+        messageElement.className = `message ${type === 'sent' ? 'user' : ''}`;
+        
+        const timestamp = new Date().toLocaleTimeString('ja-JP', {
+            hour: '2-digit',
+            minute: '2-digit'
         });
 
-        const messageHTML = `
-            <div class="message message-sent">
-                <div class="message-content">
-                    <p>${escapeHTML(message)}</p>
-                </div>
-                <div class="message-time">${time}</div>
+        messageElement.innerHTML = `
+            ${type === 'received' ? `<img src="${avatar}" class="message-avatar" alt="Avatar">` : ''}
+            <div class="message-content">
+                <div class="message-bubble">${content}</div>
+                <div class="message-time">${timestamp}</div>
             </div>
+            ${type === 'sent' ? `<img src="../assets/images/user-avatar.jpg" class="message-avatar" alt="User">` : ''}
         `;
 
-        chatMessages.insertAdjacentHTML('beforeend', messageHTML);
-        textarea.value = '';
-        adjustTextareaHeight();
-        scrollToBottom();
-    }
-
-    function updateChatHeader(card) {
-        const chatHeader = document.querySelector('.chat-header');
-        const avatar = card.querySelector('.user-avatar').cloneNode(true);
-        const name = card.querySelector('.user-name').textContent;
-        const status = card.querySelector('.user-status').textContent;
-
-        chatHeader.querySelector('.user-avatar').replaceWith(avatar);
-        chatHeader.querySelector('.user-name').textContent = name;
-        chatHeader.querySelector('.user-status').textContent = status;
-    }
-
-    function scrollToBottom() {
+        chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function escapeHTML(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
+    // 入力中インジケータの表示
+    function showTypingIndicator() {
+        const indicatorElement = document.createElement('div');
+        indicatorElement.className = 'message';
+        indicatorElement.innerHTML = `
+            <img src="${document.querySelector(`.user-card[data-user="${currentUser}"] img`).src}" class="message-avatar" alt="Avatar">
+            <div class="message-content">
+                <div class="message-bubble typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `;
+        indicatorElement.id = 'typing-indicator';
+        chatMessages.appendChild(indicatorElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // 入力中インジケータの非表示
+    function hideTypingIndicator() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) {
+            indicator.remove();
+        }
+    }
+
+    // 初期メッセージの取得
+    function getWelcomeMessage(user) {
+        const messages = {
+            mei: 'こんにちは！めいです。趣味や好きなことについて話しましょう！',
+            yuki: 'はじめまして、ゆきです。最近見た映画や読んだ本について教えてください。',
+            hana: 'こんにちは、はなです。音楽や旅行の話が大好きです！',
+            rin: 'りんです！スポーツや健康的な生活について話しませんか？'
+        };
+        return messages[user] || 'こんにちは！お話しましょう。';
+    }
+
+    // AIの返信を生成（実際のAPIレスポンスに置き換える）
+    function getAIResponse(message, user) {
+        // ここでGemini APIを呼び出す
+        return `申し訳ありません。現在APIの接続に問題が発生しています。しばらくしてからもう一度お試しください。`;
+    }
+
+    // デフォルトユーザーを選択
+    const defaultUser = userCards[0];
+    if (defaultUser) {
+        defaultUser.click();
     }
 }
 
