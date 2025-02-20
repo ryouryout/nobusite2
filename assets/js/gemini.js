@@ -487,5 +487,15 @@ class GeminiChat {
     }
 }
 
-// グローバルインスタンスの作成
-window.geminiChat = new GeminiChat(); 
+// グローバルインスタンスの作成と初期化
+window.geminiChat = new GeminiChat();
+window.geminiChat.setApiKey(GEMINI_API_KEY);
+
+// デバッグ用のコンソールログ
+console.log('Gemini API initialized with key:', GEMINI_API_KEY ? 'Set' : 'Not set');
+
+// エラーハンドリングの強化
+window.onerror = function(msg, url, line, col, error) {
+    console.error('Global error:', { msg, url, line, col, error });
+    return false;
+}; 

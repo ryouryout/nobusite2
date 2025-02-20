@@ -239,6 +239,8 @@
         </a>
     </nav>
 
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/gemini.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // 画像の読み込みエラーを処理
@@ -255,6 +257,10 @@
                 window.location.href = `chat.html?user=${userId}`;
             });
         });
+
+        // デバッグ用のコンソールログ
+        console.log('DOMContentLoaded: メッセージページの初期化完了');
+        console.log('画像パス確認:', document.querySelector('.avatar').src);
     });
     </script>
 </body>
