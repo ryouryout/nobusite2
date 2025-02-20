@@ -469,25 +469,6 @@
     </header>
 
     <div class="page-container">
-        <div class="tabs-container">
-            <div class="tabs">
-                <button class="tab active" data-tab="messages">
-                    <i class="fas fa-comments"></i>
-                    <span>メッセージ</span>
-                </button>
-                <button class="tab" data-tab="likes">
-                    <i class="fas fa-heart"></i>
-                    <span>いいね</span>
-                    <span class="badge">12</span>
-                </button>
-                <button class="tab" data-tab="matches">
-                    <i class="fas fa-user-friends"></i>
-                    <span>マッチ</span>
-                    <span class="badge">5</span>
-                </button>
-            </div>
-        </div>
-
         <div id="messages" class="tab-content active">
             <div class="messages-layout">
                 <div class="user-selection">
@@ -520,19 +501,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="chat-container">
-                    <div class="chat-messages" id="chatMessages">
-                        <!-- メッセージはJavaScriptで動的に追加されます -->
-                    </div>
-                    <div class="chat-input">
-                        <textarea id="messageInput" placeholder="メッセージを入力..." class="chat-input-field"></textarea>
-                        <button id="sendButton" class="chat-send-button">
-                            <i class="fas fa-paper-plane"></i>
-                            <span>送信</span>
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -557,5 +525,15 @@
 
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/chat.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.user-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const contact = card.getAttribute('data-user');
+                window.location.href = 'chat.html?contact=' + contact;
+            });
+        });
+    });
+    </script>
 </body>
 </html> 
