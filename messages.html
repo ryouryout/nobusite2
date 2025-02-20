@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メッセージ - マッチングサイト</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-heart"></i>
+                <span>マッチング</span>
+            </a>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="nav-links"></nav>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab" data-tab="messages-tab">
+                    <i class="fas fa-comments"></i>
+                    <span>メッセージ</span>
+                </button>
+                <button class="tab" data-tab="likes-tab">
+                    <i class="fas fa-star"></i>
+                    <span>いいね</span>
+                    <span class="tab-badge">12</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="messages-layout">
+            <div class="user-selection">
+                <h3>チャット相手を選択</h3>
+                <div class="user-card" data-user="mei">
+                    <img src="../assets/images/mei.jpg" alt="めい" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name">めい</div>
+                        <div class="user-status">23歳・東京</div>
+                    </div>
+                </div>
+                <div class="user-card" data-user="yuki">
+                    <img src="../assets/images/yuki.jpg" alt="ゆき" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name">ゆき</div>
+                        <div class="user-status">25歳・札幌</div>
+                    </div>
+                </div>
+                <div class="user-card" data-user="hana">
+                    <img src="../assets/images/hana.jpg" alt="はな" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name">はな</div>
+                        <div class="user-status">22歳・京都</div>
+                    </div>
+                </div>
+                <div class="user-card" data-user="rin">
+                    <img src="../assets/images/rin.jpg" alt="りん" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name">りん</div>
+                        <div class="user-status">24歳・福岡</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="messages-tab" class="tab-content">
+                <div class="chat-messages"></div>
+            </div>
+
+            <div id="likes-tab" class="tab-content">
+                <div class="likes-container">
+                    <h3>いいね！一覧</h3>
+                    <p>あなたにいいね！をした人が表示されます</p>
+                    <!-- いいね一覧のコンテンツ -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/gemini.js"></script>
+</body>
+</html> 

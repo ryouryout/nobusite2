@@ -530,41 +530,42 @@ function initializeTabs() {
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
     
-    // Get active tab from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const activeTabId = urlParams.get('tab') || 'messages-tab';
-    
-    // Set initial active tab
-    tabs.forEach(tab => {
-        const tabId = tab.getAttribute('data-tab');
-        if (tabId === activeTabId) {
-            tab.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        } else {
-            tab.classList.remove('active');
-            document.getElementById(tabId).classList.remove('active');
+    function switchTab(tabId) {
+        // すべてのタブとコンテンツを非アクティブ化
+        tabs.forEach(tab => tab.classList.remove('active'));
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+            content.style.display = 'none';
+        });
+        
+        // 選択されたタブとコンテンツをアクティブ化
+        const selectedTab = document.querySelector(`[data-tab="${tabId}"]`);
+        const selectedContent = document.getElementById(tabId);
+        
+        if (selectedTab && selectedContent) {
+            selectedTab.classList.add('active');
+            selectedContent.style.display = 'block';
+            setTimeout(() => selectedContent.classList.add('active'), 50);
+            
+            // URLパラメータを更新
+            const url = new URL(window.location.href);
+            url.searchParams.set('tab', tabId);
+            history.replaceState(null, '', url);
         }
-    });
+    }
     
-    // Add click event listeners
+    // タブクリックイベントの設定
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // Remove active class from all tabs and contents
-            tabs.forEach(t => t.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // Add active class to clicked tab and corresponding content
-            tab.classList.add('active');
             const tabId = tab.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
-            
-            // Update URL parameter
-            const newUrl = new URL(window.location.href);
-            newUrl.searchParams.set('tab', tabId);
-            window.history.pushState({}, '', newUrl);
-            
-            // Scroll to top of tab content
-            document.getElementById(tabId).scrollTo(0, 0);
+            switchTab(tabId);
         });
     });
+    
+    // URLパラメータからタブを復元
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeTabId = urlParams.get('tab') || tabs[0]?.getAttribute('data-tab');
+    if (activeTabId) {
+        switchTab(activeTabId);
+    }
 } 
