@@ -112,30 +112,31 @@ function initializeChat() {
     });
 
     // メッセージ送信処理
-    function sendMessage() {
+    async function sendMessage() {
         const message = chatInput.value.trim();
         if (message && currentUser) {
-            // ユーザーのメッセージを表示
             appendMessage({
                 type: 'sent',
                 content: message
             });
-
-            // 入力フィールドをクリア
             chatInput.value = '';
-
-            // 返信中のインジケータを表示
             showTypingIndicator();
-
-            // AIの返信を取得（実際のAPIコールはここで行う）
-            setTimeout(() => {
+            try {
+                const response = await window.geminiChat.sendMessage(message, currentUser);
                 hideTypingIndicator();
                 appendMessage({
                     type: 'received',
-                    content: getAIResponse(message, currentUser),
+                    content: response,
                     avatar: document.querySelector(`.user-card[data-user="${currentUser}"] img`).src
                 });
-            }, 1000 + Math.random() * 1000); // ランダムな遅延を追加
+            } catch (error) {
+                hideTypingIndicator();
+                appendMessage({
+                    type: 'received',
+                    content: 'エラーが発生しました。しばらく後に再試行してください。',
+                    avatar: document.querySelector(`.user-card[data-user="${currentUser}"] img`).src
+                });
+            }
         }
     }
 
@@ -209,12 +210,6 @@ function initializeChat() {
             rin: 'りんです！スポーツや健康的な生活について話しませんか？'
         };
         return messages[user] || 'こんにちは！お話しましょう。';
-    }
-
-    // AIの返信を生成（実際のAPIレスポンスに置き換える）
-    function getAIResponse(message, user) {
-        // ここでGemini APIを呼び出す
-        return `申し訳ありません。現在APIの接続に問題が発生しています。しばらくしてからもう一度お試しください。`;
     }
 
     // デフォルトユーザーを選択
