@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNavigation();
     initializeChat();
     initializeScrollBehavior();
+    initializeTabs();
 });
 
 function initializeNavigation() {
@@ -525,5 +526,78 @@ function initializePageSpecificBehavior() {
             loadMessages();
             break;
         // 他のページ固有の初期化処理を追加
+    }
+}
+
+function initializeTabs() {
+    const tabContainers = document.querySelectorAll('.tabs-container');
+    
+    tabContainers.forEach(container => {
+        const tabs = container.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.tab-content');
+        
+        // 最初のタブをアクティブにする
+        if (tabs.length > 0 && !container.querySelector('.tab.active')) {
+            tabs[0].classList.add('active');
+            const targetId = tabs[0].getAttribute('data-tab');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // タブの切り替え
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // コンテンツの切り替え
+                const targetId = tab.getAttribute('data-tab');
+                contents.forEach(content => {
+                    content.classList.remove('active');
+                    content.style.display = 'none';
+                });
+                
+                const targetContent = document.getElementById(targetId);
+                if (targetContent) {
+                    targetContent.style.display = 'block';
+                    setTimeout(() => {
+                        targetContent.classList.add('active');
+                    }, 50);
+                }
+                
+                // スクロール位置の調整
+                if (window.innerWidth <= 768) {
+                    const tabsScroll = container.querySelector('.tabs');
+                    const tabLeft = tab.offsetLeft;
+                    const tabWidth = tab.offsetWidth;
+                    const scrollLeft = tabsScroll.scrollLeft;
+                    const containerWidth = tabsScroll.offsetWidth;
+                    
+                    const targetScrollLeft = tabLeft - (containerWidth - tabWidth) / 2;
+                    tabsScroll.scrollTo({
+                        left: targetScrollLeft,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // URLパラメータの更新
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('tab', targetId);
+                const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+                history.replaceState(null, '', newUrl);
+            });
+        });
+    });
+    
+    // URLパラメータからタブを復元
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+        const tab = document.querySelector(`[data-tab="${tabParam}"]`);
+        if (tab) {
+            tab.click();
+        }
     }
 } 

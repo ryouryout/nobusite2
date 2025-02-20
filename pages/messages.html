@@ -427,95 +427,134 @@
     </header>
 
     <main class="page-container">
-        <div class="tabs">
-            <button class="tab active" data-tab="messages">
-                <i class="fas fa-comments"></i>
-                <span>メッセージ</span>
-            </button>
-            <button class="tab" data-tab="gemini">
-                <i class="fas fa-robot"></i>
-                <span>Gemini</span>
-            </button>
-            <button class="tab" data-tab="likes">
-                <i class="fas fa-heart"></i>
-                <span>いいね</span>
-            </button>
-            <button class="tab" data-tab="matches">
-                <i class="fas fa-user-friends"></i>
-                <span>マッチ</span>
-            </button>
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" data-tab="messages-tab">
+                    <i class="fas fa-comments"></i>
+                    <span>メッセージ</span>
+                    <div class="tab-badge">3</div>
+                </button>
+                <button class="tab" data-tab="gemini-tab">
+                    <i class="fas fa-robot"></i>
+                    <span>Gemini</span>
+                </button>
+                <button class="tab" data-tab="likes-tab">
+                    <i class="fas fa-heart"></i>
+                    <span>いいね</span>
+                    <div class="tab-badge">12</div>
+                </button>
+                <button class="tab" data-tab="matches-tab">
+                    <i class="fas fa-user-friends"></i>
+                    <span>マッチ</span>
+                    <div class="tab-badge">5</div>
+                </button>
+            </div>
         </div>
 
-        <div class="messages-layout">
-            <div class="user-selection">
-                <div class="search-bar">
-                    <input type="search" placeholder="ユーザーを検索..." class="search-input">
+        <div id="messages-tab" class="tab-content active">
+            <div class="messages-layout">
+                <div class="user-selection">
+                    <div class="search-bar">
+                        <input type="search" placeholder="ユーザーを検索..." class="search-input">
+                    </div>
+                    <div class="user-list">
+                        <div class="user-card" data-user="user1">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
+                            <div class="user-info">
+                                <div class="user-name">さくら</div>
+                                <div class="user-status">オンライン</div>
+                            </div>
+                        </div>
+                        <div class="user-card" data-user="user2">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="はな" class="user-avatar">
+                            <div class="user-info">
+                                <div class="user-name">はな</div>
+                                <div class="user-status">2時間前</div>
+                            </div>
+                        </div>
+                        <div class="user-card" data-user="gemini">
+                            <div class="user-avatar ai-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="user-info">
+                                <div class="user-name">Gemini</div>
+                                <div class="user-status">AI アシスタント</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="user-list">
-                    <div class="user-card" data-user="user1">
+
+                <div class="chat-view">
+                    <div class="chat-header">
+                        <button class="back-button" aria-label="戻る">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
                         <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
                         <div class="user-info">
                             <div class="user-name">さくら</div>
                             <div class="user-status">オンライン</div>
                         </div>
+                        <button class="more-button" aria-label="その他">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
                     </div>
-                    <div class="user-card" data-user="user2">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="はな" class="user-avatar">
-                        <div class="user-info">
-                            <div class="user-name">はな</div>
-                            <div class="user-status">2時間前</div>
+
+                    <div class="chat-messages">
+                        <div class="message message-received">
+                            <div class="message-content">
+                                <p>こんにちは！</p>
+                            </div>
+                            <div class="message-time">14:30</div>
+                        </div>
+                        <div class="message message-sent">
+                            <div class="message-content">
+                                <p>はじめまして！よろしくお願いします😊</p>
+                            </div>
+                            <div class="message-time">14:31</div>
                         </div>
                     </div>
-                    <div class="user-card" data-user="gemini">
-                        <div class="user-avatar ai-avatar">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="user-info">
-                            <div class="user-name">Gemini</div>
-                            <div class="user-status">AI アシスタント</div>
-                        </div>
+
+                    <div class="chat-input">
+                        <button class="attachment-button" aria-label="添付">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <textarea class="chat-input-field" placeholder="メッセージを入力..." rows="1"></textarea>
+                        <button class="chat-send-button" aria-label="送信">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="chat-view">
-                <div class="chat-header">
-                    <button class="back-button" aria-label="戻る">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
-                    <div class="user-info">
-                        <div class="user-name">さくら</div>
-                        <div class="user-status">オンライン</div>
+        <div id="gemini-tab" class="tab-content">
+            <div class="gemini-chat">
+                <div class="gemini-welcome">
+                    <div class="gemini-avatar">
+                        <i class="fas fa-robot"></i>
                     </div>
-                    <button class="more-button" aria-label="その他">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </div>
-
-                <div class="chat-messages">
-                    <div class="message message-received">
-                        <div class="message-content">
-                            <p>こんにちは！</p>
-                        </div>
-                        <div class="message-time">14:30</div>
-                    </div>
-                    <div class="message message-sent">
-                        <div class="message-content">
-                            <p>はじめまして！よろしくお願いします😊</p>
-                        </div>
-                        <div class="message-time">14:31</div>
+                    <div class="gemini-message">
+                        <h3>Geminiアシスタント</h3>
+                        <p>お困りのことがありましたら、お気軽にご相談ください。</p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="chat-input">
-                    <button class="attachment-button" aria-label="添付">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    <textarea class="chat-input-field" placeholder="メッセージを入力..." rows="1"></textarea>
-                    <button class="chat-send-button" aria-label="送信">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+        <div id="likes-tab" class="tab-content">
+            <div class="likes-container">
+                <h3>いいね一覧</h3>
+                <div class="likes-grid">
+                    <!-- Likes content will be dynamically loaded -->
+                </div>
+            </div>
+        </div>
+
+        <div id="matches-tab" class="tab-content">
+            <div class="matches-container">
+                <h3>新しいマッチ</h3>
+                <div class="matches-grid">
+                    <!-- Matches content will be dynamically loaded -->
                 </div>
             </div>
         </div>
