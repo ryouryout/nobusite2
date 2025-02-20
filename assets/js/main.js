@@ -1,83 +1,80 @@
 // モバイルメニューの制御
 document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const menuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
     const navLinksItems = navLinks.querySelectorAll('.nav-link');
     const body = document.body;
-    let isMenuOpen = false;
 
     // オーバーレイ要素の作成
     const overlay = document.createElement('div');
     overlay.className = 'mobile-menu-overlay';
     body.appendChild(overlay);
 
-    function toggleMenu() {
-        isMenuOpen = !isMenuOpen;
-        navLinks.classList.toggle('active');
-        mobileMenuButton.classList.toggle('active');
-        overlay.classList.toggle('active');
-        body.classList.toggle('menu-open');
+    // メニューの開閉状態を管理
+    let isMenuOpen = false;
 
-        // アニメーションの適用
+    // メニューを開く関数
+    function openMenu() {
+        isMenuOpen = true;
+        menuButton.classList.add('active');
+        navLinks.classList.add('active');
+        overlay.classList.add('active');
+        body.classList.add('menu-open');
+        
+        // アニメーション用のインデックスを設定
         navLinksItems.forEach((link, index) => {
             link.style.setProperty('--index', index);
-            if (isMenuOpen) {
-                link.style.transitionDelay = `${index * 0.1}s`;
-            } else {
-                link.style.transitionDelay = '0s';
-            }
+            link.style.transitionDelay = `${index * 0.1}s`;
         });
     }
 
+    // メニューを閉じる関数
     function closeMenu() {
-        if (isMenuOpen) {
-            isMenuOpen = false;
-            navLinks.classList.remove('active');
-            mobileMenuButton.classList.remove('active');
-            overlay.classList.remove('active');
-            body.classList.remove('menu-open');
+        isMenuOpen = false;
+        menuButton.classList.remove('active');
+        navLinks.classList.remove('active');
+        overlay.classList.remove('active');
+        body.classList.remove('menu-open');
 
-            navLinksItems.forEach(link => {
-                link.style.transitionDelay = '0s';
-            });
-        }
+        navLinksItems.forEach(link => {
+            link.style.transitionDelay = '0s';
+        });
     }
 
-    if (mobileMenuButton) {
-        mobileMenuButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleMenu();
-        });
+    // メニューボタンのクリックイベント
+    menuButton.addEventListener('click', () => {
+        if (isMenuOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
 
-        // メニュー項目をクリックしたらメニューを閉じる
-        navLinksItems.forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
+    // オーバーレイのクリックイベント
+    overlay.addEventListener('click', closeMenu);
 
-        // オーバーレイをクリックしたらメニューを閉じる
-        overlay.addEventListener('click', closeMenu);
+    // ナビゲーションリンクのクリックイベント
+    navLinksItems.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
 
-        // 画面の外側をクリックしたらメニューを閉じる
-        document.addEventListener('click', function(e) {
-            if (isMenuOpen && !e.target.closest('.nav-links') && !e.target.closest('.mobile-menu-button')) {
-                closeMenu();
-            }
-        });
+    // ESCキーでメニューを閉じる
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isMenuOpen) {
+            closeMenu();
+        }
+    });
 
-        // ESCキーでメニューを閉じる
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && isMenuOpen) {
-                closeMenu();
-            }
-        });
-
-        // 画面サイズが変更された時にメニューを閉じる
-        window.addEventListener('resize', function() {
+    // ウィンドウリサイズ時の処理
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
             if (window.innerWidth > 768 && isMenuOpen) {
                 closeMenu();
             }
-        });
-    }
+        }, 250);
+    });
 });
 
 // スクロール時のヘッダー制御
@@ -405,7 +402,6 @@ function handleRegistration(form) {
 
 // ページ読み込み時の初期化
 document.addEventListener('DOMContentLoaded', function() {
-    initializeMobileMenu();
     updateNavigation(window.location.pathname.includes('/pages/'));
 });
 
@@ -435,78 +431,4 @@ function initializePageSpecificBehavior() {
             break;
         // 他のページ固有の初期化処理を追加
     }
-}
-
-// モバイルメニューの初期化
-function initializeMobileMenu() {
-    const menuButton = document.querySelector('.mobile-menu-button');
-    const navLinks = document.querySelector('.nav-links');
-    const body = document.body;
-
-    // オーバーレイ要素の作成
-    const overlay = document.createElement('div');
-    overlay.className = 'mobile-menu-overlay';
-    body.appendChild(overlay);
-
-    // メニューの開閉状態を管理
-    let isMenuOpen = false;
-
-    // メニューを開く関数
-    function openMenu() {
-        isMenuOpen = true;
-        menuButton.classList.add('active');
-        navLinks.classList.add('active');
-        overlay.classList.add('active');
-        body.classList.add('menu-open');
-        
-        // アニメーション用のインデックスを設定
-        const links = navLinks.querySelectorAll('.nav-link');
-        links.forEach((link, index) => {
-            link.style.setProperty('--index', index);
-        });
-    }
-
-    // メニューを閉じる関数
-    function closeMenu() {
-        isMenuOpen = false;
-        menuButton.classList.remove('active');
-        navLinks.classList.remove('active');
-        overlay.classList.remove('active');
-        body.classList.remove('menu-open');
-    }
-
-    // メニューボタンのクリックイベント
-    menuButton.addEventListener('click', () => {
-        if (isMenuOpen) {
-            closeMenu();
-        } else {
-            openMenu();
-        }
-    });
-
-    // オーバーレイのクリックイベント
-    overlay.addEventListener('click', closeMenu);
-
-    // ナビゲーションリンクのクリックイベント
-    navLinks.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', closeMenu);
-    });
-
-    // ESCキーでメニューを閉じる
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isMenuOpen) {
-            closeMenu();
-        }
-    });
-
-    // ウィンドウリサイズ時の処理
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            if (window.innerWidth > 768 && isMenuOpen) {
-                closeMenu();
-            }
-        }, 250);
-    });
 } 
