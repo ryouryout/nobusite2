@@ -406,74 +406,99 @@
     </header>
 
     <main class="page-container">
-        <div class="chat-container">
-            <div class="chat-sidebar">
-                <div class="chat-users">
-                    <div class="chat-user active">
-                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=100&q=80" alt="さくら" class="chat-user-avatar">
-                        <div class="chat-user-info">
-                            <div class="chat-user-name">さくら</div>
-                            <div class="chat-user-status">オンライン</div>
-                        </div>
+        <div class="tabs">
+            <div class="tab active" data-tab="messages">メッセージ</div>
+            <div class="tab" data-tab="gemini">Gemini</div>
+            <div class="tab" data-tab="likes">いいね</div>
+            <div class="tab" data-tab="matches">マッチ</div>
+        </div>
+
+        <div class="messages-layout">
+            <!-- ユーザー選択画面 -->
+            <div class="user-selection">
+                <div class="user-card" data-user="user1">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name">さくら</div>
+                        <div class="user-status">オンライン</div>
                     </div>
-                    <div class="chat-user">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="はな" class="chat-user-avatar">
-                        <div class="chat-user-info">
-                            <div class="chat-user-name">はな</div>
-                            <div class="chat-user-status">30分前</div>
-                        </div>
+                </div>
+                <div class="user-card" data-user="user2">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="はな" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name">はな</div>
+                        <div class="user-status">2時間前</div>
                     </div>
-                    <div class="chat-user">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80" alt="ゆき" class="chat-user-avatar">
-                        <div class="chat-user-info">
-                            <div class="chat-user-name">ゆき</div>
-                            <div class="chat-user-status">2時間前</div>
-                        </div>
+                </div>
+                <div class="user-card" data-user="gemini">
+                    <div class="user-avatar" style="background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-robot" style="color: var(--color-primary); font-size: 24px;"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Gemini</div>
+                        <div class="user-status">AI アシスタント</div>
                     </div>
                 </div>
             </div>
 
-            <div class="chat-main">
+            <!-- チャット画面 -->
+            <div class="chat-view">
                 <div class="chat-header">
-                    <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=100&q=80" alt="さくら" class="chat-user-avatar">
-                    <div class="chat-user-info">
-                        <div class="chat-user-name">さくら</div>
-                        <div class="chat-user-status">オンライン</div>
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name">さくら</div>
+                        <div class="user-status">オンライン</div>
                     </div>
                 </div>
 
                 <div class="chat-messages">
                     <div class="message message-received">
                         <div class="message-content">
-                            こんにちは！プロフィール見ました。
+                            こんにちは！プロフィール拝見しました。
                         </div>
                         <div class="message-time">14:30</div>
                     </div>
-
                     <div class="message message-sent">
                         <div class="message-content">
-                            はじめまして！プロフィールを見ていただきありがとうございます。
+                            はじめまして！ご覧いただきありがとうございます。
                         </div>
                         <div class="message-time">14:31</div>
-                    </div>
-
-                    <div class="message message-received">
-                        <div class="message-content">
-                            趣味が似ていますね。カフェ巡りやアート鑑賞が好きなんですね。
-                        </div>
-                        <div class="message-time">14:33</div>
-                    </div>
-
-                    <div class="message message-sent">
-                        <div class="message-content">
-                            はい！最近は新しいカフェを探検するのが楽しみです。おすすめのカフェはありますか？
-                        </div>
-                        <div class="message-time">14:35</div>
                     </div>
                 </div>
 
                 <div class="chat-input">
-                    <input type="text" class="chat-input-field" placeholder="メッセージを入力...">
+                    <textarea class="chat-input-field" placeholder="メッセージを入力..."></textarea>
+                    <button class="chat-send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gemini チャット画面 -->
+            <div class="chat-view" style="display: none;" id="gemini-chat">
+                <div class="chat-header">
+                    <div class="user-avatar" style="background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-robot" style="color: var(--color-primary); font-size: 24px;"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Gemini</div>
+                        <div class="user-status">AI アシスタント</div>
+                    </div>
+                </div>
+
+                <div class="chat-messages gemini-chat">
+                    <div class="gemini-message">
+                        <div class="gemini-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="gemini-content">
+                            こんにちは！私はGeminiです。どのようなお手伝いができますか？
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <textarea class="chat-input-field" placeholder="Geminiに質問する..."></textarea>
                     <button class="chat-send-button">
                         <i class="fas fa-paper-plane"></i>
                     </button>
@@ -484,27 +509,110 @@
 
     <script src="../assets/js/main.js"></script>
     <script>
-        // ログイン状態のチェック
-        function checkLoginStatus() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            if (!isLoggedIn) {
-                window.location.href = 'login.html';
-                return;
-            }
-            updateNavigation(true);
-        }
-
-        // チャットユーザーの切り替え
-        document.querySelectorAll('.chat-user').forEach(user => {
-            user.addEventListener('click', function() {
-                document.querySelectorAll('.chat-user').forEach(u => u.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // 初期化
         document.addEventListener('DOMContentLoaded', function() {
+            // ログイン状態のチェック
             checkLoginStatus();
+
+            // タブ切り替え
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // タブに応じた表示切り替え
+                    const tabName = tab.dataset.tab;
+                    if (tabName === 'gemini') {
+                        document.querySelector('#gemini-chat').style.display = 'flex';
+                        document.querySelector('.chat-view:not(#gemini-chat)').style.display = 'none';
+                    } else {
+                        document.querySelector('#gemini-chat').style.display = 'none';
+                        document.querySelector('.chat-view:not(#gemini-chat)').style.display = 'flex';
+                    }
+                });
+            });
+
+            // ユーザーカード選択
+            const userCards = document.querySelectorAll('.user-card');
+            userCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    userCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+
+                    // モバイル時のユーザー選択画面の非表示
+                    if (window.innerWidth <= 768) {
+                        document.querySelector('.user-selection').classList.remove('active');
+                    }
+
+                    // Geminiチャット切り替え
+                    const userId = card.dataset.user;
+                    if (userId === 'gemini') {
+                        document.querySelector('#gemini-chat').style.display = 'flex';
+                        document.querySelector('.chat-view:not(#gemini-chat)').style.display = 'none';
+                        
+                        // タブも切り替え
+                        tabs.forEach(t => t.classList.remove('active'));
+                        document.querySelector('[data-tab="gemini"]').classList.add('active');
+                    } else {
+                        document.querySelector('#gemini-chat').style.display = 'none';
+                        document.querySelector('.chat-view:not(#gemini-chat)').style.display = 'flex';
+                    }
+                });
+            });
+
+            // メッセージ送信処理
+            document.querySelectorAll('.chat-send-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const input = button.previousElementSibling;
+                    const message = input.value.trim();
+                    if (message) {
+                        const chatMessages = button.closest('.chat-view').querySelector('.chat-messages');
+                        const time = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+                        
+                        if (button.closest('#gemini-chat')) {
+                            // Geminiチャットの場合
+                            chatMessages.innerHTML += `
+                                <div class="gemini-message user">
+                                    <div class="gemini-content">${message}</div>
+                                </div>
+                            `;
+                            // AIの応答をシミュレート
+                            setTimeout(() => {
+                                chatMessages.innerHTML += `
+                                    <div class="gemini-message">
+                                        <div class="gemini-avatar">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <div class="gemini-content">申し訳ありません。現在、AIアシスタント機能は開発中です。</div>
+                                    </div>
+                                `;
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            }, 1000);
+                        } else {
+                            // 通常のチャットの場合
+                            chatMessages.innerHTML += `
+                                <div class="message message-sent">
+                                    <div class="message-content">${message}</div>
+                                    <div class="message-time">${time}</div>
+                                </div>
+                            `;
+                        }
+                        
+                        input.value = '';
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                });
+            });
+
+            // Enterキーでメッセージ送信
+            document.querySelectorAll('.chat-input-field').forEach(input => {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        input.nextElementSibling.click();
+                    }
+                });
+            });
         });
     </script>
 </body>
