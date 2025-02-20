@@ -23,6 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 isMenuOpen = false;
             });
         });
+
+        // 画面の外側をクリックしたらメニューを閉じる
+        document.addEventListener('click', function(event) {
+            if (isMenuOpen && !event.target.closest('.nav-links') && !event.target.closest('.mobile-menu-button')) {
+                navLinks.classList.remove('active');
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = '';
+                isMenuOpen = false;
+            }
+        });
     }
 
     // 画面サイズが変更された時にメニューを閉じる

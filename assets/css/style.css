@@ -962,7 +962,7 @@ input:checked + .slider:before {
 
 @media (max-width: 768px) {
     .header-container {
-        padding: 0 var(--spacing-sm);
+        padding: 0 1rem;
     }
 
     .nav-links {
@@ -971,11 +971,12 @@ input:checked + .slider:before {
         top: 70px;
         left: 0;
         right: 0;
-        background: white;
+        background: #ffffff;
         padding: 1rem;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         flex-direction: column;
-        gap: 1rem;
+        gap: 0;
+        z-index: 1000;
     }
 
     .nav-links.active {
@@ -985,7 +986,13 @@ input:checked + .slider:before {
     .nav-links a {
         width: 100%;
         text-align: center;
-        padding: 0.8rem;
+        padding: 1rem;
+        color: #1a202c;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none;
     }
 
     .mobile-menu-button {
@@ -1024,6 +1031,105 @@ input:checked + .slider:before {
 
     .chat-messages {
         max-height: calc(100vh - 400px);
+    }
+
+    /* ヒーローセクションのスタイル改善 */
+    .hero-section {
+        padding: 2rem 1rem;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
+    }
+
+    .hero-content {
+        text-align: center;
+        padding: 2rem 1rem;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        color: #1a202c;
+        text-shadow: none;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        color: #2d3748;
+        margin-bottom: 2rem;
+    }
+
+    /* 特徴セクションの改善 */
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    .feature-card {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-title {
+        color: #1a202c;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .feature-description {
+        color: #2d3748;
+        font-size: 1rem;
+    }
+
+    /* 料金プランの改善 */
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    .pricing-card {
+        background: #ffffff;
+        padding: 2rem;
+    }
+
+    .pricing-title {
+        color: #1a202c;
+        font-size: 1.5rem;
+    }
+
+    .pricing-price {
+        color: #2d3748;
+    }
+
+    .feature-list li {
+        color: #2d3748;
+    }
+
+    /* ページヘッダーの改善 */
+    .page-header {
+        padding: 2rem 1rem;
+        margin-bottom: 2rem;
+        background: #ffffff;
+    }
+
+    .page-title {
+        color: #1a202c;
+        font-size: 2rem;
+    }
+
+    .page-subtitle {
+        color: #2d3748;
+        font-size: 1rem;
+    }
+
+    /* コンテンツコンテナの改善 */
+    .content-container {
+        padding: 1rem;
+        margin: 0;
+        background: #ffffff;
     }
 }
 
