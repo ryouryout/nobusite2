@@ -432,55 +432,52 @@ function initializePageSpecificBehavior() {
 function initializeMobileMenu() {
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
+    const navLinksItems = navLinks.querySelectorAll('.nav-link');
     let isMenuOpen = false;
 
     if (mobileMenuButton) {
         mobileMenuButton.addEventListener('click', function() {
             isMenuOpen = !isMenuOpen;
             navLinks.classList.toggle('active');
-            mobileMenuButton.innerHTML = isMenuOpen ? 
-                '<i class="fas fa-times"></i>' : 
-                '<i class="fas fa-bars"></i>';
+            mobileMenuButton.classList.toggle('active');
             document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-            
-            // メニューが開いたときのアニメーション
-            if (isMenuOpen) {
-                navLinks.querySelectorAll('.nav-link').forEach((link, index) => {
-                    link.style.animation = `slideIn 0.3s ease forwards ${index * 0.1}s`;
-                });
-            } else {
-                navLinks.querySelectorAll('.nav-link').forEach(link => {
-                    link.style.animation = '';
-                });
-            }
+
+            // アニメーションの適用
+            navLinksItems.forEach((link, index) => {
+                if (isMenuOpen) {
+                    link.style.transitionDelay = `${index * 0.1}s`;
+                } else {
+                    link.style.transitionDelay = '0s';
+                }
+            });
         });
 
         // メニュー項目をクリックしたらメニューを閉じる
-        navLinks.querySelectorAll('.nav-link').forEach(link => {
+        navLinksItems.forEach(link => {
             link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = '';
-                isMenuOpen = false;
-                
-                // アニメーションをリセット
-                navLinks.querySelectorAll('.nav-link').forEach(link => {
-                    link.style.animation = '';
-                });
+                if (isMenuOpen) {
+                    isMenuOpen = false;
+                    navLinks.classList.remove('active');
+                    mobileMenuButton.classList.remove('active');
+                    document.body.style.overflow = '';
+                    
+                    navLinksItems.forEach(link => {
+                        link.style.transitionDelay = '0s';
+                    });
+                }
             });
         });
 
         // 画面の外側をクリックしたらメニューを閉じる
         document.addEventListener('click', function(event) {
             if (isMenuOpen && !event.target.closest('.nav-links') && !event.target.closest('.mobile-menu-button')) {
-                navLinks.classList.remove('active');
-                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = '';
                 isMenuOpen = false;
+                navLinks.classList.remove('active');
+                mobileMenuButton.classList.remove('active');
+                document.body.style.overflow = '';
                 
-                // アニメーションをリセット
-                navLinks.querySelectorAll('.nav-link').forEach(link => {
-                    link.style.animation = '';
+                navLinksItems.forEach(link => {
+                    link.style.transitionDelay = '0s';
                 });
             }
         });
@@ -488,14 +485,13 @@ function initializeMobileMenu() {
         // 画面サイズが変更されたときにメニューを閉じる
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768 && isMenuOpen) {
-                navLinks.classList.remove('active');
-                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = '';
                 isMenuOpen = false;
+                navLinks.classList.remove('active');
+                mobileMenuButton.classList.remove('active');
+                document.body.style.overflow = '';
                 
-                // アニメーションをリセット
-                navLinks.querySelectorAll('.nav-link').forEach(link => {
-                    link.style.animation = '';
+                navLinksItems.forEach(link => {
+                    link.style.transitionDelay = '0s';
                 });
             }
         });

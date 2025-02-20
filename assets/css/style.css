@@ -69,6 +69,12 @@
     --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-transform: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-opacity: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --header-bg: #ffffff;
+    --header-text: #2c3e50;
+    --nav-link-color: #2c3e50;
+    --nav-link-hover: #3498db;
+    --nav-link-active: #3498db;
 }
 
 /* Reset & Base Styles */
@@ -977,7 +983,7 @@ input:checked + .slider:before {
 
 @media (max-width: 768px) {
     .header {
-        background: var(--color-white);
+        background: var(--header-bg);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         height: 60px;
         position: fixed;
@@ -997,27 +1003,29 @@ input:checked + .slider:before {
 
     .logo {
         font-size: 1.5rem;
-        color: var(--color-primary);
+        color: var(--nav-link-active);
+        z-index: 1002;
     }
 
     .nav-links {
-        display: none;
         position: fixed;
         top: 60px;
-        left: 0;
-        right: 0;
-        background: var(--color-white);
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 60px);
+        background: var(--header-bg);
         padding: 1rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 1000;
-        max-height: calc(100vh - 60px);
         overflow-y: auto;
-    }
-
-    .nav-links.active {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links.active {
+        left: 0;
     }
 
     .nav-link {
@@ -1027,20 +1035,27 @@ input:checked + .slider:before {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: var(--color-gray-700);
-        background: var(--color-white);
-        border: 1px solid var(--color-gray-200);
+        color: var(--nav-link-color);
+        background: var(--header-bg);
+        border: 1px solid rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         transition: all 0.3s ease;
         text-decoration: none;
         font-weight: 500;
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    .nav-links.active .nav-link {
+        opacity: 1;
+        transform: translateX(0);
     }
 
     .nav-link i {
         width: 24px;
         text-align: center;
         font-size: 1.2rem;
-        color: var(--color-primary);
+        color: var(--nav-link-active);
     }
 
     .nav-link span {
@@ -1048,34 +1063,40 @@ input:checked + .slider:before {
     }
 
     .nav-link:hover {
-        background: var(--color-gray-50);
-        color: var(--color-primary);
+        background: rgba(52, 152, 219, 0.1);
+        color: var(--nav-link-active);
         transform: translateX(5px);
     }
 
     .nav-link.active {
-        background: var(--color-primary);
-        color: var(--color-white);
-        border-color: var(--color-primary);
+        background: var(--nav-link-active);
+        color: var(--header-bg);
+        border-color: var(--nav-link-active);
     }
 
     .nav-link.active i {
-        color: var(--color-white);
+        color: var(--header-bg);
     }
 
     .mobile-menu-button {
         display: block;
         background: none;
         border: none;
-        color: var(--color-gray-700);
+        color: var(--nav-link-color);
         font-size: 1.5rem;
         padding: 0.5rem;
         cursor: pointer;
         z-index: 1001;
+        transition: all 0.3s ease;
     }
 
     .mobile-menu-button:hover {
-        color: var(--color-primary);
+        color: var(--nav-link-active);
+    }
+
+    .mobile-menu-button.active {
+        color: var(--nav-link-active);
+        transform: rotate(90deg);
     }
 
     .btn-login,
@@ -1084,22 +1105,24 @@ input:checked + .slider:before {
         width: 100%;
         justify-content: center;
         margin-top: 0.5rem;
+        padding: 1rem;
     }
 
     .btn-login {
-        background: var(--color-primary);
-        color: var(--color-white);
+        background: var(--nav-link-active);
+        color: var(--header-bg);
+        border: none;
     }
 
     .btn-register {
-        background: var(--color-white);
-        color: var(--color-primary);
-        border: 1px solid var(--color-primary);
+        background: var(--header-bg);
+        color: var(--nav-link-active);
+        border: 1px solid var(--nav-link-active);
     }
 
     .btn-logout {
-        background: var(--color-error);
-        color: var(--color-white);
+        background: #e74c3c;
+        color: var(--header-bg);
         border: none;
     }
 
