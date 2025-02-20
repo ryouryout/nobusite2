@@ -435,7 +435,7 @@ function initializeMobileMenu() {
     let isMenuOpen = false;
 
     if (mobileMenuButton) {
-        mobileMenuButton.addEventListener('click', function() {
+        mobileMenuButton.addEventListener('click', () => {
             isMenuOpen = !isMenuOpen;
             navLinks.classList.toggle('active');
             mobileMenuButton.innerHTML = isMenuOpen ? 
@@ -444,23 +444,23 @@ function initializeMobileMenu() {
             document.body.style.overflow = isMenuOpen ? 'hidden' : '';
         });
 
-        // メニュー項目をクリックしたらメニューを閉じる
+        // メニューリンクをクリックしたらメニューを閉じる
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
+                isMenuOpen = false;
                 navLinks.classList.remove('active');
                 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = '';
-                isMenuOpen = false;
             });
         });
 
-        // 画面サイズが変更されたときにメニューを閉じる
+        // ウィンドウリサイズ時の処理
         window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
+            if (window.innerWidth > 768 && isMenuOpen) {
+                isMenuOpen = false;
                 navLinks.classList.remove('active');
                 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = '';
-                isMenuOpen = false;
             }
         });
     }

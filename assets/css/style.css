@@ -977,71 +977,43 @@ input:checked + .slider:before {
 
 @media (max-width: 768px) {
     .header {
-        height: 60px;
         background: #ffffff;
-        padding: 0;
-    }
-
-    .header-container {
-        height: 100%;
-        padding: 0 1rem;
-        display: flex;
-        align-items: center;
-    }
-
-    .logo {
-        font-size: 1.5rem;
-        z-index: 1001;
-        position: relative;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .nav-links {
+        display: none;
         position: fixed;
         top: 60px;
         left: 0;
-        right: 0;
+        width: 100%;
         background: #ffffff;
         padding: 1rem;
-        display: none;
-        flex-direction: column;
-        gap: 0.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         z-index: 1000;
-        max-height: calc(100vh - 60px);
-        overflow-y: auto;
     }
 
     .nav-links.active {
         display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
 
     .nav-link {
-        padding: 1rem;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .nav-link::after {
-        display: none;
+        color: #333;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
     }
 
     .nav-link:hover,
     .nav-link.active {
-        background: var(--color-primary-light);
-        color: var(--color-primary);
+        background: #f0f4f8;
+        color: #3498db;
     }
 
     .mobile-menu-button {
         display: block;
-        padding: 0.5rem;
-        font-size: 1.5rem;
-        color: #333;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        z-index: 1000;
     }
 
     .btn-login,
