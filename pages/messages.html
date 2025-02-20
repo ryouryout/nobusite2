@@ -3,560 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#ff1493">
     <title>メッセージ - Nobu Love</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        .messages-layout {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 1rem;
-            height: calc(100vh - 180px);
-            margin-top: 1rem;
-            background: #ffffff;
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        .page-container {
+            padding: 0;
+            max-width: 100%;
+            background: #fff;
         }
 
-        @media (max-width: 768px) {
-            .messages-layout {
-                grid-template-columns: 1fr;
-                height: calc(100vh - 120px);
-            }
-
-            .messages-sidebar {
-                display: none;
-            }
-
-            .messages-sidebar.active {
-                display: flex;
-                position: fixed;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                height: calc(100vh - 80px);
-                background: #ffffff;
-                z-index: 100;
-            }
-
-            .chat-container {
-                display: none;
-            }
-
-            .chat-messages {
-                height: calc(100vh - 240px);
-            }
-
-            .chat-input {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                background: #ffffff;
-                padding: 1rem;
-                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-            }
-
-            .thread-list {
-                width: 100%;
-            }
-
-            .thread-item {
-                padding: 1.2rem;
-                border-bottom: 1px solid #e2e8f0;
-                border-right: none;
-                margin: 0;
-            }
-
-            .page-container {
-                padding: 0;
-                border-radius: 0;
-            }
-            .messages-layout {
-                flex-direction: column;
-            }
-            .thread-name {
-                font-size: 1.1rem;
-            }
-            .thread-preview {
-                font-size: 0.95rem;
-                line-height: 1.4;
-            }
+        .message-list {
+            padding-top: 60px;
+            padding-bottom: 60px;
         }
 
-        .messages-sidebar {
-            border-right: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .messages-search {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .search-container {
-            position: relative;
-        }
-
-        .search-container input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .search-container i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-        }
-
-        .message-threads {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0.5rem;
-        }
-
-        .message-thread {
+        .message-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            border-radius: 0.5rem;
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background: #ffffff;
+            transition: background-color 0.2s;
         }
 
-        .message-thread:hover {
-            background: #f8fafc;
+        .message-item:active {
+            background-color: #f5f5f5;
         }
 
-        .message-thread.active {
-            background: #e8f4ff;
-        }
-
-        .thread-avatar {
-            position: relative;
-            width: 48px;
-            height: 48px;
-        }
-
-        .thread-avatar img {
-            width: 100%;
-            height: 100%;
+        .avatar {
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
+            margin-right: 12px;
             object-fit: cover;
         }
 
-        .online-status {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #cbd5e1;
-            border: 2px solid #ffffff;
-        }
-
-        .online-status.online {
-            background: #22c55e;
-        }
-
-        .thread-content {
+        .message-content {
             flex: 1;
             min-width: 0;
         }
 
-        .thread-header {
+        .message-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.25rem;
+            align-items: baseline;
+            margin-bottom: 4px;
         }
 
-        .thread-name {
+        .user-name {
+            font-size: 16px;
             font-weight: 600;
-            color: #1e293b;
-            font-size: 0.95rem;
+            color: #333;
         }
 
-        .thread-time {
-            font-size: 0.8rem;
-            color: #64748b;
+        .message-time {
+            font-size: 12px;
+            color: #999;
         }
 
-        .thread-preview {
-            color: #64748b;
-            font-size: 0.85rem;
+        .last-message {
+            font-size: 14px;
+            color: #666;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .messages-main {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .chat-header {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #ffffff;
-        }
-
-        .show-sidebar {
-            display: none;
-            margin-right: 1rem;
-        }
-
-        .close-sidebar {
-            display: none;
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 101;
-        }
-
-        .chat-user {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .chat-user img {
-            width: 40px;
-            height: 40px;
+        .online-status {
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            object-fit: cover;
+            background: #4CAF50;
+            margin-left: 8px;
+            display: inline-block;
         }
 
-        .chat-user-info h3 {
-            font-weight: 600;
-            color: #1e293b;
+        .offline {
+            background: #ccc;
         }
 
-        .chat-actions {
+        @media (min-width: 768px) {
+            .message-list {
+                max-width: 600px;
+                margin: 0 auto;
+                border-left: 1px solid #f0f0f0;
+                border-right: 1px solid #f0f0f0;
+            }
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            z-index: 1000;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .nav-links {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
             display: flex;
-            gap: 0.5rem;
+            justify-content: space-around;
+            padding: 8px 0;
+            border-top: 1px solid #f0f0f0;
         }
 
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            background: #f8fafc;
-        }
-
-        .message-date {
-            text-align: center;
-            margin: 1rem 0;
-            color: #64748b;
-            font-size: 0.85rem;
-        }
-
-        .message {
-            display: flex;
-            gap: 1rem;
-            max-width: 80%;
-        }
-
-        .message.sent {
-            margin-left: auto;
-            flex-direction: row-reverse;
-        }
-
-        .message-avatar img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .message-content {
-            background: #ffffff;
-            padding: 0.75rem 1rem;
-            border-radius: 1rem;
-            position: relative;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .message.sent .message-content {
-            background: #3498db;
-            color: #ffffff;
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-top: 0.25rem;
-            text-align: right;
-        }
-
-        .message.sent .message-time {
-            color: #cbd5e1;
-        }
-
-        .chat-input {
-            padding: 1rem;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .chat-input .form-input {
-            flex: 1;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .chat-input .btn-icon {
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            color: #64748b;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input .btn-icon:hover {
-            background: #f1f5f9;
-            color: #3498db;
-        }
-
-        .chat-input .btn-primary {
-            background: #3498db;
-            color: #ffffff;
-        }
-
-        .chat-input .btn-primary:hover {
-            background: #2980b9;
-        }
-
-        .empty-state {
+        .nav-link {
+            color: #666;
+            text-decoration: none;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #64748b;
-            text-align: center;
-            padding: 2rem;
+            font-size: 12px;
         }
 
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: #cbd5e1;
+        .nav-link i {
+            font-size: 20px;
+            margin-bottom: 4px;
         }
 
-        .empty-state h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #1e293b;
-        }
-
-        .empty-state p {
-            font-size: 0.95rem;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 768px) {
-            .show-sidebar,
-            .close-sidebar {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background: #ffffff;
-                border: 1px solid #e2e8f0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-
-            .show-sidebar:hover,
-            .close-sidebar:hover {
-                background: #f8fafc;
-            }
-
-            .show-sidebar i,
-            .close-sidebar i {
-                font-size: 1.2rem;
-                color: #64748b;
-            }
-        }
-
-        .typing-indicator {
-            display: flex;
-            gap: 4px;
-            padding: 4px 8px;
-        }
-        .typing-indicator span {
-            width: 8px;
-            height: 8px;
-            background: var(--color-gray-400);
-            border-radius: 50%;
-            animation: typing 1s infinite;
-        }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typing {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-        }
-
-        .tabs-container {
-            background: var(--color-gray-50);
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid var(--color-gray-200);
-            margin-bottom: 1rem;
-            position: sticky;
-            top: 60px; /* Height of header */
-            z-index: 100;
-        }
-
-        @media (max-width: 480px) {
-            .tabs-container {
-                padding: 0.6rem 0.5rem;
-                font-size: 0.9rem;
-            }
-            .tab {
-                padding: 0.6rem;
-                font-size: 0.85rem;
-                min-width: 80px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .chat-input {
-                padding: 0.75rem;
-            }
-            .chat-input .chat-input-field {
-                font-size: 0.9rem;
-            }
-            .chat-messages {
-                padding: 0.75rem;
-                gap: 0.75rem;
-            }
+        .nav-link.active {
+            color: #ff6b6b;
         }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-container">
-            <a href="../index.html" class="logo">
-                <i class="fas fa-heart"></i>
-                Nobu Love
-            </a>
-            <nav class="nav-links">
-                <a href="../index.html" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>ホーム</span>
-                </a>
-                <a href="matches.html" class="nav-link">
-                    <i class="fas fa-user-friends"></i>
-                    <span>お相手</span>
-                </a>
-                <a href="messages.html" class="nav-link active">
-                    <i class="fas fa-comments"></i>
-                    <span>メッセージ</span>
-                </a>
-                <a href="mypage.html" class="nav-link">
-                    <i class="fas fa-user"></i>
-                    <span>マイページ</span>
-                </a>
-            </nav>
-            <button class="mobile-menu-button">
-                <i class="fas fa-bars"></i>
-            </button>
+            <h1>メッセージ</h1>
         </div>
     </header>
 
     <div class="page-container">
-        <div id="messages" class="tab-content active">
-            <div class="messages-layout">
-                <div class="user-selection">
-                    <div class="user-card active" data-user="mei">
-                        <img loading="lazy" src="../assets/images/mei.jpg" alt="めい" class="user-avatar">
-                        <div class="user-info">
-                            <div class="user-name">めい</div>
-                            <div class="user-status">オンライン</div>
-                        </div>
+        <div class="message-list">
+            <div class="message-item" data-user="mei">
+                <img src="../assets/images/mei.jpg" alt="めい" class="avatar" loading="lazy">
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="user-name">めい<span class="online-status"></span></span>
+                        <span class="message-time">たった今</span>
                     </div>
-                    <div class="user-card" data-user="yuki">
-                        <img loading="lazy" src="../assets/images/yuki.jpg" alt="ゆき" class="user-avatar">
-                        <div class="user-info">
-                            <div class="user-name">ゆき</div>
-                            <div class="user-status">2時間前</div>
-                        </div>
-                    </div>
-                    <div class="user-card" data-user="hana">
-                        <img loading="lazy" src="../assets/images/hana.jpg" alt="はな" class="user-avatar">
-                        <div class="user-info">
-                            <div class="user-name">はな</div>
-                            <div class="user-status">3時間前</div>
-                        </div>
-                    </div>
-                    <div class="user-card" data-user="rin">
-                        <img loading="lazy" src="../assets/images/rin.jpg" alt="りん" class="user-avatar">
-                        <div class="user-info">
-                            <div class="user-name">りん</div>
-                            <div class="user-status">オフライン</div>
-                        </div>
-                    </div>
+                    <div class="last-message">こんにちは！趣味の話とかできたら嬉しいな♪</div>
                 </div>
             </div>
-        </div>
 
-        <div id="likes" class="tab-content">
-            <div class="likes-container">
-                <h3>いいねした人</h3>
-                <div class="user-grid">
-                    <!-- いいねしたユーザー一覧がここに表示されます -->
+            <div class="message-item" data-user="yuki">
+                <img src="../assets/images/yuki.jpg" alt="ゆき" class="avatar" loading="lazy">
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="user-name">ゆき<span class="online-status offline"></span></span>
+                        <span class="message-time">2時間前</span>
+                    </div>
+                    <div class="last-message">最近見た映画の話を聞かせてください！</div>
                 </div>
             </div>
-        </div>
 
-        <div id="matches" class="tab-content">
-            <div class="matches-container">
-                <h3>マッチした人</h3>
-                <div class="user-grid">
-                    <!-- マッチしたユーザー一覧がここに表示されます -->
+            <div class="message-item" data-user="hana">
+                <img src="../assets/images/hana.jpg" alt="はな" class="avatar" loading="lazy">
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="user-name">はな<span class="online-status"></span></span>
+                        <span class="message-time">3時間前</span>
+                    </div>
+                    <div class="last-message">京都のおすすめスポット教えます！</div>
+                </div>
+            </div>
+
+            <div class="message-item" data-user="rin">
+                <img src="../assets/images/rin.jpg" alt="りん" class="avatar" loading="lazy">
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="user-name">りん<span class="online-status offline"></span></span>
+                        <span class="message-time">1日前</span>
+                    </div>
+                    <div class="last-message">新しいライブハウス見つけたんだ！</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/chat.js"></script>
+    <nav class="nav-links">
+        <a href="../index.html" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>ホーム</span>
+        </a>
+        <a href="matches.html" class="nav-link">
+            <i class="fas fa-heart"></i>
+            <span>お相手</span>
+        </a>
+        <a href="messages.html" class="nav-link active">
+            <i class="fas fa-comments"></i>
+            <span>メッセージ</span>
+        </a>
+        <a href="mypage.html" class="nav-link">
+            <i class="fas fa-user"></i>
+            <span>マイページ</span>
+        </a>
+    </nav>
+
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.user-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const contact = card.getAttribute('data-user');
-                window.location.href = 'chat.html?contact=' + contact;
+        document.querySelectorAll('.message-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const userId = item.getAttribute('data-user');
+                window.location.href = `chat.html?user=${userId}`;
             });
         });
     });

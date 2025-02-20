@@ -3,233 +3,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#ff1493">
     <title>チャット - Nobu Love</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        /* Additional styles for the chat page */
-        .chat-page { 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            background: #f8fafc;
+        .page-container {
+            padding: 0;
+            max-width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
         }
+
         .chat-header {
-            padding: 1rem;
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #fff;
+            border-bottom: 1px solid #f0f0f0;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 1000;
         }
-        .chat-header .back-button {
-            font-size: 1rem;
-            color: #3498db;
+
+        .back-button {
+            font-size: 24px;
+            color: #666;
             text-decoration: none;
+            margin-right: 16px;
         }
-        .chat-header .contact-info {
+
+        .chat-user {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            flex: 1;
         }
-        .chat-header .contact-info img {
+
+        .chat-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            margin-right: 12px;
             object-fit: cover;
         }
-        .chat-header .contact-info .name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #1e293b;
+
+        .chat-user-info {
+            flex: 1;
         }
+
+        .chat-user-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .chat-user-status {
+            font-size: 12px;
+            color: #999;
+        }
+
         .chat-messages {
             flex: 1;
-            padding: 1rem;
             overflow-y: auto;
+            padding: 70px 16px 80px;
+            background: #f5f5f5;
+        }
+
+        .message {
+            margin-bottom: 16px;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
         }
+
+        .message.sent {
+            align-items: flex-end;
+        }
+
+        .message.received {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 15px;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .message.sent .message-content {
+            background: #ff6b6b;
+            color: #fff;
+            border-top-right-radius: 4px;
+        }
+
+        .message.received .message-content {
+            background: #fff;
+            color: #333;
+            border-top-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #999;
+        }
+
         .chat-input {
-            padding: 1rem;
-            border-top: 1px solid #e2e8f0;
-            background: #ffffff;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #f0f0f0;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 12px;
         }
+
         .chat-input textarea {
             flex: 1;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.95rem;
+            height: 40px;
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            resize: none;
+            font-size: 15px;
+            line-height: 1.4;
         }
-        .chat-input button {
-            padding: 0.75rem 1rem;
-            background: #3498db;
-            color: #ffffff;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-        }
-        .message {
-            display: flex;
-            gap: 0.5rem;
-            max-width: 70%;
-        }
-        .message.user {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-        .message .avatar {
-            width: 36px;
-            height: 36px;
+
+        .send-button {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            object-fit: cover;
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
-        .message .content {
-            background: #ffffff;
-            padding: 0.75rem 1rem;
-            border-radius: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
-        .message.user .content {
-            background: #3498db;
-            color: #ffffff;
-        }
-        .message .time {
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-top: 0.25rem;
-            text-align: right;
-        }
+
         .typing-indicator {
             display: flex;
             gap: 4px;
-            padding: 4px 8px;
+            padding: 8px 16px;
+            background: #fff;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            align-self: flex-start;
         }
+
         .typing-indicator span {
             width: 8px;
             height: 8px;
-            background: #cbd5e1;
+            background: #999;
             border-radius: 50%;
             animation: typing 1s infinite;
         }
+
         .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
         @keyframes typing {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-4px); }
         }
+
+        @media (min-width: 768px) {
+            .page-container {
+                max-width: 600px;
+                margin: 0 auto;
+                border-left: 1px solid #f0f0f0;
+                border-right: 1px solid #f0f0f0;
+            }
+
+            .chat-header {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .chat-input {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="chat-page">
+    <div class="page-container">
         <header class="chat-header">
-            <a href="messages.html" class="back-button">＜ 戻る</a>
-            <div class="contact-info">
-                <img id="contactAvatar" src="" alt="Contact Avatar">
-                <span id="contactName" class="name">相手</span>
+            <a href="messages.html" class="back-button">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            <div class="chat-user">
+                <img src="../assets/images/mei.jpg" alt="めい" class="chat-avatar" id="userAvatar">
+                <div class="chat-user-info">
+                    <div class="chat-user-name" id="userName">めい</div>
+                    <div class="chat-user-status" id="userStatus">オンライン</div>
+                </div>
             </div>
         </header>
+
         <div class="chat-messages" id="chatMessages">
-            <!-- チャットメッセージがここに表示される -->
+            <!-- メッセージはJavaScriptで動的に追加されます -->
         </div>
+
         <div class="chat-input">
-            <textarea id="chatInput" placeholder="メッセージを入力..."></textarea>
-            <button id="chatSendButton"><i class="fas fa-paper-plane"></i> 送信</button>
+            <textarea id="messageInput" placeholder="メッセージを入力..." rows="1"></textarea>
+            <button class="send-button" id="sendButton" disabled>
+                <i class="fas fa-paper-plane"></i>
+            </button>
         </div>
     </div>
 
     <script>
+    class GeminiChat {
+        constructor() {
+            this.messages = [];
+            this.userProfiles = {
+                mei: {
+                    name: 'めい',
+                    age: 24,
+                    location: '東京',
+                    personality: '明るく社交的',
+                    interests: ['音楽', '旅行', 'カフェ巡り'],
+                    speakingStyle: '親しみやすく、絵文字をよく使う',
+                    guidelines: '音楽や旅行の話題を好み、相手の趣味に興味を示す'
+                },
+                yuki: {
+                    name: 'ゆき',
+                    age: 26,
+                    location: '横浜',
+                    personality: '落ち着いていて知的',
+                    interests: ['映画', '読書', 'アート'],
+                    speakingStyle: '丁寧で知的な話し方',
+                    guidelines: '文化的な話題を好み、深い会話を心がける'
+                },
+                hana: {
+                    name: 'はな',
+                    age: 23,
+                    location: '京都',
+                    personality: '優しく癒し系',
+                    interests: ['料理', '温泉', '着物'],
+                    speakingStyle: '優しく穏やか',
+                    guidelines: '日本の伝統文化や食べ物の話題が得意'
+                },
+                rin: {
+                    name: 'りん',
+                    age: 25,
+                    location: '大阪',
+                    personality: '活発でポジティブ',
+                    interests: ['ライブ', 'スポーツ', 'フェス'],
+                    speakingStyle: '元気で明るい関西弁',
+                    guidelines: '音楽やアクティブな話題を好む'
+                }
+            };
+        }
+
+        async sendMessage(message, userId) {
+            // 実際のAPIコールをシミュレート
+            const profile = this.userProfiles[userId];
+            const context = this.createContext(profile);
+            
+            // 応答を生成（実際にはGemini APIを使用）
+            const response = await this.simulateResponse(message, profile);
+            return response;
+        }
+
+        createContext(profile) {
+            return {
+                name: profile.name,
+                age: profile.age,
+                location: profile.location,
+                personality: profile.personality,
+                interests: profile.interests,
+                speakingStyle: profile.speakingStyle,
+                guidelines: profile.guidelines
+            };
+        }
+
+        async simulateResponse(message, profile) {
+            // プロフィールに基づいた応答をシミュレート
+            await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+            
+            const responses = {
+                mei: [
+                    "うんうん、それすごく分かる！🎵",
+                    "私も最近そう思ってたの！😊",
+                    "それって面白そう！もっと詳しく聞かせて♪",
+                    "素敵だね〜！私も行ってみたいな🌟"
+                ],
+                yuki: [
+                    "なるほど、興味深い視点ですね。",
+                    "最近、私もそのことについて考えていました。",
+                    "その話題について、もう少し詳しくお聞きできますか？",
+                    "素敵な考え方だと思います。"
+                ],
+                hana: [
+                    "そうなんですね、素敵です✨",
+                    "私もそういう経験があります。心が温まりますよね。",
+                    "京都にもそういう素敵な場所があるんですよ。",
+                    "和食や着物のことなら、お話できますよ🍜"
+                ],
+                rin: [
+                    "めっちゃわかる〜！！",
+                    "それ超楽しそうやん！",
+                    "私もライブ行くの大好きなんよ〜！",
+                    "一緒に行きたいな〜、盛り上がりそう！"
+                ]
+            };
+
+            const userResponses = responses[profile.name.toLowerCase()];
+            return userResponses[Math.floor(Math.random() * userResponses.length)];
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-        // URLパラメータから連絡先情報を取得
         const urlParams = new URLSearchParams(window.location.search);
-        const contact = urlParams.get('contact') || 'mei';
-
-        // 連絡先情報のマッピング
-        const contactDetails = {
-            mei: { name: 'めい', avatar: '../assets/images/mei.jpg' },
-            yuki: { name: 'ゆき', avatar: '../assets/images/yuki.jpg' },
-            hana: { name: 'はな', avatar: '../assets/images/hana.jpg' },
-            rin: { name: 'りん', avatar: '../assets/images/rin.jpg' }
-        };
-
-        const currentContact = contactDetails[contact] || contactDetails['mei'];
-        document.getElementById('contactName').textContent = currentContact.name;
-        document.getElementById('contactAvatar').src = currentContact.avatar;
-
+        const userId = urlParams.get('user') || 'mei';
+        const geminiChat = new GeminiChat();
         const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const chatSendButton = document.getElementById('chatSendButton');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        let isTyping = false;
 
-        // メッセージをチャットに追加する関数
-        function appendMessage({ type, content, avatar }) {
-            const messageElement = document.createElement('div');
-            messageElement.className = 'message ' + (type === 'sent' ? 'user' : '');
-            const timestamp = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
-            messageElement.innerHTML = `
-                ${type !== 'sent' ? `<img class="avatar" src="${avatar}" alt="Avatar">` : ''}
-                <div class="content">
-                    <div class="message-bubble">${content}</div>
-                    <div class="time">${timestamp}</div>
-                </div>
-                ${type === 'sent' ? `<img class="avatar" src="../assets/images/user-avatar.jpg" alt="User">` : ''}
-            `;
-            chatMessages.appendChild(messageElement);
+        // ユーザー情報を設定
+        const profile = geminiChat.userProfiles[userId];
+        document.getElementById('userName').textContent = profile.name;
+        document.getElementById('userAvatar').src = `../assets/images/${userId}.jpg`;
+
+        // 初期メッセージを表示
+        const welcomeMessages = {
+            mei: "こんにちは！趣味の話とかできたら嬉しいな♪",
+            yuki: "はじめまして。最近見た映画の話を聞かせてください。",
+            hana: "こんにちは。京都の素敵なスポット、ご案内できますよ。",
+            rin: "やっほー！最近ライブ行った？私は先週超良いとこ見つけたんよ！"
+        };
+        
+        addMessage(welcomeMessages[userId], 'received');
+
+        function addMessage(text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = text;
+            
+            const time = document.createElement('div');
+            time.className = 'message-time';
+            time.textContent = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.appendChild(content);
+            messageDiv.appendChild(time);
+            chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // 入力中インジケータの表示
-        function showTypingIndicator() {
+        function addTypingIndicator() {
             const indicator = document.createElement('div');
-            indicator.className = 'message';
-            indicator.id = 'typingIndicator';
-            indicator.innerHTML = `
-                <img class="avatar" src="${currentContact.avatar}" alt="Avatar">
-                <div class="content">
-                    <div class="typing-indicator">
-                        <span></span><span></span><span></span>
-                    </div>
-                </div>
-            `;
+            indicator.className = 'typing-indicator';
+            indicator.innerHTML = '<span></span><span></span><span></span>';
             chatMessages.appendChild(indicator);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            return indicator;
         }
 
-        // 入力中インジケータの非表示
-        function hideTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) {
-                indicator.remove();
+        function removeTypingIndicator(indicator) {
+            if (indicator && indicator.parentNode) {
+                indicator.parentNode.removeChild(indicator);
             }
         }
 
-        // メッセージ送信処理
+        messageInput.addEventListener('input', () => {
+            sendButton.disabled = !messageInput.value.trim();
+            messageInput.style.height = 'auto';
+            messageInput.style.height = (messageInput.scrollHeight) + 'px';
+        });
+
         async function sendMessage() {
-            const message = chatInput.value.trim();
-            if (message === '') return;
-            appendMessage({ type: 'sent', content: message });
-            chatInput.value = '';
-            showTypingIndicator();
+            const message = messageInput.value.trim();
+            if (!message || isTyping) return;
+
+            // 送信メッセージを表示
+            addMessage(message, 'sent');
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            sendButton.disabled = true;
+
+            // タイピングインジケータを表示
+            isTyping = true;
+            const indicator = addTypingIndicator();
+
             try {
-                // APIを利用して、選択された女性の回答を取得する
-                const response = await window.geminiChat.sendMessage(message, currentContact.name);
-                hideTypingIndicator();
-                appendMessage({ type: 'received', content: response, avatar: currentContact.avatar });
+                // AIの応答を取得
+                const response = await geminiChat.sendMessage(message, userId);
+                removeTypingIndicator(indicator);
+                addMessage(response, 'received');
             } catch (error) {
-                hideTypingIndicator();
-                appendMessage({ type: 'received', content: 'エラーが発生しました。後ほど再試行してください。', avatar: currentContact.avatar });
+                console.error('Error:', error);
+                removeTypingIndicator(indicator);
+                addMessage('申し訳ありません、エラーが発生しました。', 'received');
+            } finally {
+                isTyping = false;
             }
         }
 
-        chatSendButton.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
@@ -237,6 +432,5 @@
         });
     });
     </script>
-    <script src="../assets/js/chat.js"></script>
 </body>
 </html> 
