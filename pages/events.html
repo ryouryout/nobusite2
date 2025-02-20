@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>イベント - Nobu Love</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .page-container {
+            padding-top: 80px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .events-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #ffffff, #f0f4f8);
+            color: #2c3e50;
+            padding: 3rem;
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .page-title {
+            position: relative;
+            z-index: 1;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .page-subtitle {
+            position: relative;
+            z-index: 1;
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-option {
+            padding: 0.75rem 1.5rem;
+            background: #f8fafc;
+            border-radius: 2rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .filter-option:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        .filter-option.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .event-content {
+            padding: 1.5rem;
+        }
+
+        .event-date {
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #3498db;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .event-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .event-location, .event-participants {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-options {
+                overflow-x: auto;
+                padding-bottom: 1rem;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-heart"></i>
+                Nobu Love
+            </a>
+            <nav class="nav-links">
+                <!-- ナビゲーションは動的に更新されます -->
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="events-container">
+            <div class="page-header">
+                <h1 class="page-title">イベント</h1>
+                <p class="page-subtitle">素敵な出会いのきっかけとなるイベントを見つけましょう</p>
+            </div>
+
+            <section class="filter-section">
+                <h2 class="filter-title">イベントを探す</h2>
+                <div class="filter-options">
+                    <div class="filter-option active">すべて</div>
+                    <div class="filter-option">パーティー</div>
+                    <div class="filter-option">アウトドア</div>
+                    <div class="filter-option">カフェ会</div>
+                    <div class="filter-option">趣味</div>
+                    <div class="filter-option">スポーツ</div>
+                </div>
+            </section>
+
+            <div class="events-grid">
+                <!-- Event Card 1 -->
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=80" alt="カフェ交流会" class="event-image">
+                    <div class="event-content">
+                        <span class="event-date">
+                            <i class="far fa-calendar"></i>
+                            2024年4月15日 14:00
+                        </span>
+                        <h3 class="event-title">春のカフェ交流会</h3>
+                        <p class="event-description">
+                            おしゃれなカフェで素敵な出会いを見つけませんか？
+                            気軽な雰囲気で楽しく交流できるイベントです。
+                        </p>
+                        <div class="event-footer">
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                渋谷区
+                            </div>
+                            <div class="event-participants">
+                                <i class="fas fa-users"></i>
+                                12/20人
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 2 -->
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80" alt="ハイキング" class="event-image">
+                    <div class="event-content">
+                        <span class="event-date">
+                            <i class="far fa-calendar"></i>
+                            2024年4月21日 10:00
+                        </span>
+                        <h3 class="event-title">高尾山ハイキング</h3>
+                        <p class="event-description">
+                            自然の中で素敵な出会いを見つけませんか？
+                            初心者でも参加できる気軽なハイキングイベントです。
+                        </p>
+                        <div class="event-footer">
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                八王子市
+                            </div>
+                            <div class="event-participants">
+                                <i class="fas fa-users"></i>
+                                8/15人
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 3 -->
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?auto=format&fit=crop&w=800&q=80" alt="料理教室" class="event-image">
+                    <div class="event-content">
+                        <span class="event-date">
+                            <i class="far fa-calendar"></i>
+                            2024年4月28日 18:00
+                        </span>
+                        <h3 class="event-title">イタリアン料理教室</h3>
+                        <p class="event-description">
+                            プロのシェフから学ぶ本格イタリアン。
+                            料理を通じて素敵な出会いを見つけましょう。
+                        </p>
+                        <div class="event-footer">
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                新宿区
+                            </div>
+                            <div class="event-participants">
+                                <i class="fas fa-users"></i>
+                                6/12人
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 4 -->
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" alt="ダンスパーティー" class="event-image">
+                    <div class="event-content">
+                        <span class="event-date">
+                            <i class="far fa-calendar"></i>
+                            2024年5月5日 19:00
+                        </span>
+                        <h3 class="event-title">春のダンスパーティー</h3>
+                        <p class="event-description">
+                            ダンスを通じて新しい出会いを見つけませんか？
+                            初心者大歓迎のフレンドリーな雰囲気です。
+                        </p>
+                        <div class="event-footer">
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                港区
+                            </div>
+                            <div class="event-participants">
+                                <i class="fas fa-users"></i>
+                                15/30人
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 5 -->
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80" alt="ボードゲーム会" class="event-image">
+                    <div class="event-content">
+                        <span class="event-date">
+                            <i class="far fa-calendar"></i>
+                            2024年5月12日 13:00
+                        </span>
+                        <h3 class="event-title">ボードゲーム交流会</h3>
+                        <p class="event-description">
+                            楽しいボードゲームを通じて交流しましょう。
+                            初めての方でも丁寧にルール説明いたします。
+                        </p>
+                        <div class="event-footer">
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                中野区
+                            </div>
+                            <div class="event-participants">
+                                <i class="fas fa-users"></i>
+                                10/16人
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 6 -->
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80" alt="音楽フェス" class="event-image">
+                    <div class="event-content">
+                        <span class="event-date">
+                            <i class="far fa-calendar"></i>
+                            2024年5月19日 16:00
+                        </span>
+                        <h3 class="event-title">アコースティックライブ交流会</h3>
+                        <p class="event-description">
+                            生演奏を楽しみながら交流できる特別なイベント。
+                            音楽好きな方々との出会いの場です。
+                        </p>
+                        <div class="event-footer">
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                下北沢
+                            </div>
+                            <div class="event-participants">
+                                <i class="fas fa-users"></i>
+                                20/40人
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // ログイン状態のチェック
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+            updateNavigation(true);
+        }
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+    </script>
+</body>
+</html> 

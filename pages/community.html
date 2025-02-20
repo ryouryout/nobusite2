@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コミュニティ - Nobu Love</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .page-container {
+            padding-top: 80px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .community-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .community-search {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-button:hover {
+            background: #2980b9;
+        }
+
+        .community-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .category-count {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .communities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .community-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .community-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .community-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .community-content {
+            padding: 1.5rem;
+        }
+
+        .community-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .community-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .community-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .community-members {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .join-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .join-button:hover {
+            background: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .community-categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .communities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-heart"></i>
+                Nobu Love
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html#features">特徴</a>
+                <a href="../index.html#pricing">料金</a>
+                <a href="matches.html">お相手</a>
+                <a href="messages.html">メッセージ</a>
+                <a href="events.html">イベント</a>
+                <a href="community.html" class="active">コミュニティ</a>
+                <a href="mypage.html">マイページ</a>
+                <a href="safety.html">安全ガイド</a>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="community-container">
+            <div class="page-header">
+                <h1 class="page-title">コミュニティ</h1>
+                <p class="page-subtitle">共通の趣味や興味を持つ人々と出会い、つながりましょう</p>
+            </div>
+
+            <div class="community-search">
+                <form class="search-form">
+                    <input type="text" class="search-input" placeholder="コミュニティを検索...">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                        検索
+                    </button>
+                </form>
+            </div>
+
+            <div class="community-categories">
+                <div class="category-card">
+                    <i class="fas fa-music category-icon"></i>
+                    <h3 class="category-title">音楽</h3>
+                    <span class="category-count">15 コミュニティ</span>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-utensils category-icon"></i>
+                    <h3 class="category-title">グルメ</h3>
+                    <span class="category-count">12 コミュニティ</span>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-hiking category-icon"></i>
+                    <h3 class="category-title">アウトドア</h3>
+                    <span class="category-count">8 コミュニティ</span>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-palette category-icon"></i>
+                    <h3 class="category-title">アート</h3>
+                    <span class="category-count">10 コミュニティ</span>
+                </div>
+            </div>
+
+            <div class="communities-grid">
+                <div class="community-card">
+                    <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80" alt="音楽コミュニティ" class="community-image">
+                    <div class="community-content">
+                        <h3 class="community-title">音楽好きの集い</h3>
+                        <p class="community-description">
+                            音楽について語り合い、一緒にライブに行ったり、
+                            セッションを楽しんだりするコミュニティです。
+                        </p>
+                        <div class="community-footer">
+                            <div class="community-members">
+                                <i class="fas fa-users"></i>
+                                128 メンバー
+                            </div>
+                            <button class="join-button">参加する</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-card">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" alt="グルメコミュニティ" class="community-image">
+                    <div class="community-content">
+                        <h3 class="community-title">グルメ探検隊</h3>
+                        <p class="community-description">
+                            美味しいお店を探して一緒に食事を楽しむ
+                            フードラバーのためのコミュニティです。
+                        </p>
+                        <div class="community-footer">
+                            <div class="community-members">
+                                <i class="fas fa-users"></i>
+                                95 メンバー
+                            </div>
+                            <button class="join-button">参加する</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-card">
+                    <img src="https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80" alt="アウトドアコミュニティ" class="community-image">
+                    <div class="community-content">
+                        <h3 class="community-title">アウトドア愛好会</h3>
+                        <p class="community-description">
+                            ハイキング、キャンプ、BBQなど、自然の中で
+                            アクティビティを楽しむコミュニティです。
+                        </p>
+                        <div class="community-footer">
+                            <div class="community-members">
+                                <i class="fas fa-users"></i>
+                                76 メンバー
+                            </div>
+                            <button class="join-button">参加する</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-card">
+                    <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80" alt="アートコミュニティ" class="community-image">
+                    <div class="community-content">
+                        <h3 class="community-title">アート＆クラフト</h3>
+                        <p class="community-description">
+                            絵画、手芸、陶芸など、創作活動を通じて
+                            交流を深めるクリエイティブなコミュニティです。
+                        </p>
+                        <div class="community-footer">
+                            <div class="community-members">
+                                <i class="fas fa-users"></i>
+                                64 メンバー
+                            </div>
+                            <button class="join-button">参加する</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // ログイン状態のチェック
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+            updateNavigation(true);
+        }
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+    </script>
+</body>
+</html> 

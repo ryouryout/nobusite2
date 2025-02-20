@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全ガイド - Nobu Love</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .safety-page {
+            padding-top: 80px;
+            min-height: 100vh;
+            background: var(--color-gray-light);
+        }
+
+        .safety-header {
+            background: linear-gradient(45deg, var(--color-primary-light), var(--color-secondary));
+            padding: 4rem 0;
+            text-align: center;
+            color: var(--color-white);
+            margin-bottom: 3rem;
+        }
+
+        .safety-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .safety-subtitle {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .safety-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .safety-section {
+            background: var(--color-white);
+            border-radius: var(--radius-medium);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            font-size: 1.8rem;
+        }
+
+        .safety-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .safety-card {
+            background: var(--color-gray-light);
+            border-radius: var(--radius-medium);
+            padding: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .safety-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: var(--color-white);
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .safety-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .safety-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--color-gray-light);
+            border-radius: var(--radius-small);
+            transition: var(--transition-base);
+        }
+
+        .safety-item:hover {
+            transform: translateX(10px);
+            background: var(--color-primary-light);
+            color: var(--color-white);
+        }
+
+        .safety-item i {
+            color: var(--color-primary);
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+
+        .safety-item:hover i {
+            color: var(--color-white);
+        }
+
+        .safety-content {
+            flex: 1;
+        }
+
+        .safety-content h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .safety-item:hover h4 {
+            color: var(--color-white);
+        }
+
+        .safety-content p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .safety-item:hover p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .emergency-contact {
+            background: var(--color-error);
+            color: var(--color-white);
+            padding: 1.5rem;
+            border-radius: var(--radius-medium);
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .emergency-icon {
+            font-size: 2rem;
+        }
+
+        .emergency-content h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-content p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .emergency-button {
+            background: var(--color-white);
+            color: var(--color-error);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-small);
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition-base);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .emergency-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .report-section {
+            background: var(--color-warning);
+            color: var(--color-white);
+            padding: 2rem;
+            border-radius: var(--radius-medium);
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .report-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .report-description {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .report-button {
+            background: var(--color-white);
+            color: var(--color-warning);
+            padding: 1rem 2rem;
+            border-radius: var(--radius-medium);
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-base);
+        }
+
+        .report-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        @media (max-width: 768px) {
+            .safety-title {
+                font-size: 2rem;
+            }
+
+            .safety-container {
+                padding: 0 1rem;
+            }
+
+            .emergency-contact {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .emergency-button {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-heart"></i>
+                Nobu Love
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html#features">特徴</a>
+                <a href="../index.html#pricing">料金</a>
+                <a href="safety.html" class="active">安全ガイド</a>
+                <a href="login.html" class="btn btn-primary">ログイン</a>
+                <a href="register.html" class="btn btn-secondary">新規登録</a>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="page-header">
+            <h1 class="page-title">安全ガイド</h1>
+            <p class="page-subtitle">安全・安心な出会いのために、以下のガイドラインをご確認ください。</p>
+        </div>
+
+        <div class="safety-container">
+            <section class="safety-section">
+                <h2 class="section-title">
+                    <i class="fas fa-shield-alt"></i>
+                    基本的な安全対策
+                </h2>
+                <div class="safety-grid">
+                    <div class="safety-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="card-title">個人情報の保護</h3>
+                        <p class="card-description">電話番号やメールアドレス、SNSアカウントなどの個人情報は慎重に扱いましょう。</p>
+                    </div>
+                    <div class="safety-card">
+                        <div class="card-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="card-title">コミュニケーション</h3>
+                        <p class="card-description">十分なメッセージのやり取りを行い、相手のことをよく理解してから実際に会いましょう。</p>
+                    </div>
+                    <div class="safety-card">
+                        <div class="card-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="card-title">待ち合わせ場所</h3>
+                        <p class="card-description">初めて会う時は、必ず人通りの多い公共の場所を選びましょう。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="safety-section">
+                <h2 class="section-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    注意すべき行動
+                </h2>
+                <ul class="safety-list">
+                    <li class="safety-item">
+                        <i class="fas fa-times-circle"></i>
+                        <div class="safety-content">
+                            <h4>金銭の要求</h4>
+                            <p>金銭や物品を要求されても、絶対に応じないでください。不審な要求は直ちに報告してください。</p>
+                        </div>
+                    </li>
+                    <li class="safety-item">
+                        <i class="fas fa-times-circle"></i>
+                        <div class="safety-content">
+                            <h4>アプリ外での連絡</h4>
+                            <p>LINEやSNSでの連絡を急かされても、慎重に判断しましょう。アプリ内でのやり取りを推奨します。</p>
+                        </div>
+                    </li>
+                    <li class="safety-item">
+                        <i class="fas fa-times-circle"></i>
+                        <div class="safety-content">
+                            <h4>強引な誘い</h4>
+                            <p>強引な誘いや執拗な連絡は要注意。不快に感じたら、はっきりと断りましょう。</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="safety-section">
+                <h2 class="section-title">
+                    <i class="fas fa-check-circle"></i>
+                    安全な出会いのためのチェックリスト
+                </h2>
+                <ul class="safety-list">
+                    <li class="safety-item">
+                        <i class="fas fa-check"></i>
+                        <div class="safety-content">
+                            <h4>プロフィールの確認</h4>
+                            <p>相手のプロフィールをしっかりと確認し、不自然な点がないか注意しましょう。</p>
+                        </div>
+                    </li>
+                    <li class="safety-item">
+                        <i class="fas fa-check"></i>
+                        <div class="safety-content">
+                            <h4>メッセージの内容</h4>
+                            <p>丁寧で誠実なメッセージのやり取りを心がけ、相手のことを理解しましょう。</p>
+                        </div>
+                    </li>
+                    <li class="safety-item">
+                        <i class="fas fa-check"></i>
+                        <div class="safety-content">
+                            <h4>実際に会う前に</h4>
+                            <p>待ち合わせ場所や時間を慎重に選び、友人に予定を伝えておきましょう。</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <div class="emergency-contact">
+                <i class="fas fa-phone-alt emergency-icon"></i>
+                <div class="emergency-content">
+                    <h3>緊急のご相談・お問い合わせ</h3>
+                    <p>24時間体制でサポートいたします。お困りの際は、すぐにご連絡ください。</p>
+                </div>
+                <a href="tel:0120-xxx-xxx" class="emergency-button">
+                    0120-XXX-XXX
+                </a>
+            </div>
+
+            <div class="report-section">
+                <h2 class="report-title">不適切なユーザーの報告</h2>
+                <p class="report-description">
+                    不適切な行為や違反行為を見かけた場合は、すぐに報告してください。<br>
+                    あなたの報告が、より安全なコミュニティづくりに貢献します。
+                </p>
+                <a href="#report" class="report-button">
+                    <i class="fas fa-flag"></i>
+                    報告する
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // 報告ボタンのクリックイベント
+        document.querySelector('.report-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('報告フォームを準備中です', 'info');
+        });
+
+        // 安全項目のホバーエフェクト
+        document.querySelectorAll('.safety-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(10px)';
+            });
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
+</body>
+</html> 

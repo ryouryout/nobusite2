@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobu Love - 素敵な出会いを見つけよう</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(255, 20, 147, 0.1), rgba(255, 105, 180, 0.2)),
+                        url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            line-height: 1.2;
+            background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--color-gray-600);
+            margin-bottom: var(--space-8);
+            line-height: 1.6;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            animation: fadeIn 1s ease-out 0.6s backwards;
+        }
+
+        .hero-image {
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 60%;
+            max-width: 800px;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .features {
+            padding: var(--space-16) 0;
+            background: var(--color-gray-50);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom right, var(--color-primary-light), var(--color-primary));
+            transform: skewY(-3deg);
+            transform-origin: 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: var(--space-12);
+            color: var(--color-primary);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--color-primary), var(--color-primary-light));
+            border-radius: var(--radius-full);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-8);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card {
+            background: var(--color-white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            text-align: center;
+            transition: var(--transition-all);
+            border: 1px solid rgba(255, 20, 147, 0.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, var(--color-primary), var(--color-primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-6);
+            color: white;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .feature-icon::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, var(--color-primary), var(--color-primary-light));
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: -1;
+            transition: var(--transition-all);
+        }
+
+        .feature-card:hover .feature-icon::after {
+            transform: scale(1.2);
+            opacity: 0.2;
+        }
+
+        .feature-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+            color: var(--color-primary);
+        }
+
+        .feature-description {
+            color: var(--color-gray-600);
+            line-height: 1.6;
+            font-size: var(--text-base);
+        }
+
+        @media (max-width: 768px) {
+            .hero-buttons {
+                flex-direction: column;
+                padding: 0 var(--space-4);
+            }
+
+            .hero-image {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-heart"></i>
+                Nobu Love
+            </a>
+            <nav class="nav-links">
+                <a href="#features">特徴</a>
+                <a href="#pricing">料金</a>
+                <a href="pages/safety.html">安全ガイド</a>
+                <a href="pages/login.html" class="btn btn-primary">ログイン</a>
+                <a href="pages/register.html" class="btn btn-secondary">新規登録</a>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>素敵な出会いを見つけよう</h1>
+                <p>Nobu Loveは、あなたにぴったりの出会いをお届けします。</p>
+                <div class="hero-buttons">
+                    <a href="pages/register.html" class="btn btn-primary btn-lg">無料で始める</a>
+                    <a href="#features" class="btn btn-secondary btn-lg">詳しく見る</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="assets/images/hero.jpg" alt="カップル" loading="lazy">
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">Nobu Loveの特徴</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>マッチング</h3>
+                        <p>AIが最適なお相手を紹介。共通の趣味や価値観を持つ方との出会いをサポートします。</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h3>コミュニティ</h3>
+                        <p>共通の趣味を持つ人々が集まるコミュニティで、自然な出会いのきっかけを見つけられます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>イベント</h3>
+                        <p>オフラインイベントで実際に会って交流。趣味や関心を共有しながら、素敵な出会いを見つけましょう。</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>安全性</h3>
+                        <p>24時間体制の監視システムと厳格な本人確認で、安心して利用できる環境を提供します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="pricing">
+            <div class="container">
+                <h2 class="section-title">料金プラン</h2>
+                <div class="pricing-toggle">
+                    <span>月払い</span>
+                    <label class="switch">
+                        <input type="checkbox" id="billing-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>年払い<span class="pricing-save">20%お得</span></span>
+                </div>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>フリープラン</h3>
+                            <div class="price">¥0<span>/月</span></div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> プロフィール作成</li>
+                            <li><i class="fas fa-check"></i> 基本検索機能</li>
+                            <li><i class="fas fa-check"></i> いいね！を受け取る</li>
+                            <li class="disabled"><i class="fas fa-times"></i> メッセージ送信</li>
+                            <li class="disabled"><i class="fas fa-times"></i> 高度な検索機能</li>
+                        </ul>
+                        <a href="pages/register.html" class="btn btn-secondary btn-block">無料で始める</a>
+                    </div>
+                    <div class="pricing-card popular">
+                        <div class="pricing-badge">人気</div>
+                        <div class="pricing-header">
+                            <h3>スタンダード</h3>
+                            <div class="price">¥3,980<span>/月</span></div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> フリープランの全機能</li>
+                            <li><i class="fas fa-check"></i> メッセージ送信（月30件）</li>
+                            <li><i class="fas fa-check"></i> 高度な検索機能</li>
+                            <li><i class="fas fa-check"></i> いいね！を送る（月50件）</li>
+                            <li class="disabled"><i class="fas fa-times"></i> イベント参加</li>
+                        </ul>
+                        <a href="pages/register.html" class="btn btn-primary btn-block">今すぐ始める</a>
+                    </div>
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>プレミアム</h3>
+                            <div class="price">¥7,980<span>/月</span></div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> スタンダードの全機能</li>
+                            <li><i class="fas fa-check"></i> メッセージ送信無制限</li>
+                            <li><i class="fas fa-check"></i> いいね！送信無制限</li>
+                            <li><i class="fas fa-check"></i> イベント優先参加</li>
+                            <li><i class="fas fa-check"></i> 24時間サポート</li>
+                        </ul>
+                        <a href="pages/register.html" class="btn btn-primary btn-block">今すぐ始める</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="safety">
+            <div class="container">
+                <h2 class="section-title">安全・安心への取り組み</h2>
+                <div class="safety-grid">
+                    <div class="safety-card">
+                        <i class="fas fa-id-card"></i>
+                        <h3>本人確認</h3>
+                        <p>政府発行の身分証明書による厳格な本人確認を実施しています。</p>
+                    </div>
+                    <div class="safety-card">
+                        <i class="fas fa-user-shield"></i>
+                        <h3>24時間監視</h3>
+                        <p>専門スタッフによる24時間体制の監視で、不適切な行為を防止します。</p>
+                    </div>
+                    <div class="safety-card">
+                        <i class="fas fa-lock"></i>
+                        <h3>データ保護</h3>
+                        <p>最新の暗号化技術で個人情報を保護し、安全なサービス運営を行っています。</p>
+                    </div>
+                </div>
+                <div class="safety-action">
+                    <a href="pages/safety.html" class="btn btn-secondary">安全ガイドを見る</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="container">
+                <h2>素敵な出会いを見つけましょう</h2>
+                <p>今すぐNobu Loveを始めて、あなたにぴったりの出会いを見つけませんか？</p>
+                <a href="pages/register.html" class="btn btn-primary btn-lg">無料で始める</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-heart"></i>
+                        Nobu Love
+                    </a>
+                    <p>素敵な出会いを見つけよう</p>
+                </div>
+                <div class="footer-section">
+                    <h4>サービス</h4>
+                    <ul>
+                        <li><a href="#features">特徴</a></li>
+                        <li><a href="#pricing">料金プラン</a></li>
+                        <li><a href="pages/safety.html">安全ガイド</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>サポート</h4>
+                    <ul>
+                        <li><a href="pages/terms.html">利用規約</a></li>
+                        <li><a href="pages/privacy.html">プライバシーポリシー</a></li>
+                        <li><a href="pages/contact.html">お問い合わせ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>フォローする</h4>
+                    <div class="social-links">
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Nobu Love. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        const billingToggle = document.getElementById('billing-toggle');
+        const prices = document.querySelectorAll('.price');
+        const originalPrices = Array.from(prices).map(price => {
+            return parseFloat(price.textContent.replace('¥', '').replace(',', ''));
+        });
+
+        billingToggle.addEventListener('change', function() {
+            prices.forEach((price, index) => {
+                if (index === 0) return;
+                const originalPrice = originalPrices[index];
+                const newPrice = this.checked ? 
+                    Math.round(originalPrice * 0.8) :
+                    originalPrice;
+                price.innerHTML = `¥${newPrice.toLocaleString()}<span>/${this.checked ? '月（年払い）' : '月'}</span>`;
+            });
+        });
+
+        // ナビゲーションの更新
+        function updateNavigation() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (isLoggedIn) {
+                navLinks.innerHTML = `
+                    <a href="pages/matches.html">お相手</a>
+                    <a href="pages/messages.html">メッセージ</a>
+                    <a href="pages/events.html">イベント</a>
+                    <a href="pages/community.html">コミュニティ</a>
+                    <a href="pages/search.html">検索</a>
+                    <a href="pages/mypage.html">マイページ</a>
+                    <a href="pages/safety.html">安全ガイド</a>
+                    <a href="#" class="btn btn-primary" onclick="handleLogout(event)">ログアウト</a>
+                `;
+            } else {
+                navLinks.innerHTML = `
+                    <a href="#features">特徴</a>
+                    <a href="#pricing">料金</a>
+                    <a href="pages/safety.html">安全ガイド</a>
+                    <a href="pages/login.html" class="btn btn-primary">ログイン</a>
+                    <a href="pages/register.html" class="btn btn-secondary">新規登録</a>
+                `;
+            }
+        }
+
+        // ページ読み込み時の初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+        });
+    </script>
+</body>
+</html> 

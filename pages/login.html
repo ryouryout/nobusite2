@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - Nobu Love</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-heart"></i>
+                Nobu Love
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html#features">特徴</a>
+                <a href="../index.html#pricing">料金</a>
+                <a href="safety.html">安全ガイド</a>
+                <a href="login.html" class="btn btn-primary active">ログイン</a>
+                <a href="register.html" class="btn btn-secondary">新規登録</a>
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="auth-container">
+            <div class="auth-box">
+                <h1 class="auth-title">ログイン</h1>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="email" class="form-label">メールアドレス</label>
+                        <input type="email" id="email" class="form-input" placeholder="example@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">パスワード</label>
+                        <div class="password-input">
+                            <input type="password" id="password" class="form-input" placeholder="パスワードを入力" required>
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <a href="#" class="forgot-password">パスワードをお忘れですか？</a>
+                    </div>
+                    <div class="form-group form-checkbox">
+                        <input type="checkbox" id="remember" class="form-checkbox-input">
+                        <label for="remember" class="form-checkbox-label">ログイン状態を保持する</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">ログイン</button>
+                </form>
+                <div class="auth-links">
+                    <p>アカウントをお持ちでない方は</p>
+                    <a href="register.html" class="auth-link">新規登録はこちら</a>
+                </div>
+                <div class="social-login">
+                    <p class="social-login-text">または</p>
+                    <div class="social-buttons">
+                        <button class="btn btn-social btn-google">
+                            <i class="fab fa-google"></i>
+                            Googleでログイン
+                        </button>
+                        <button class="btn btn-social btn-facebook">
+                            <i class="fab fa-facebook-f"></i>
+                            Facebookでログイン
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html> 

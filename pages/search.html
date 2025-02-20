@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>検索 - Nobu Love</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .page-container {
+            padding-top: 80px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #ffffff, #f0f4f8);
+            color: #2c3e50;
+            padding: 3rem;
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .page-title {
+            position: relative;
+            z-index: 1;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .page-subtitle {
+            position: relative;
+            z-index: 1;
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-form {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-button:hover {
+            background: #2980b9;
+        }
+
+        .filter-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-select {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .profile-content {
+            padding: 1.5rem;
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .profile-info {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-tag {
+            background: #f8fafc;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            color: #3498db;
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .profile-location {
+            color: #64748b;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .like-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .like-button:hover {
+            background: #2980b9;
+        }
+
+        .like-button.liked {
+            background: #e2e8f0;
+            color: #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .search-input-group {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .filter-section {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-heart"></i>
+                Nobu Love
+            </a>
+            <nav class="nav-links">
+                <!-- ナビゲーションは動的に更新されます -->
+            </nav>
+            <button class="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="search-container">
+            <div class="page-header">
+                <h1 class="page-title">お相手を探す</h1>
+                <p class="page-subtitle">理想のパートナーを見つけましょう</p>
+            </div>
+
+            <div class="search-form">
+                <div class="search-input-group">
+                    <input type="text" class="search-input" placeholder="キーワードで検索...">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                        検索
+                    </button>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label class="filter-label">年齢</label>
+                        <select class="filter-select">
+                            <option value="">指定なし</option>
+                            <option value="20-25">20-25歳</option>
+                            <option value="26-30">26-30歳</option>
+                            <option value="31-35">31-35歳</option>
+                            <option value="36-40">36-40歳</option>
+                            <option value="41-">41歳以上</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">居住地</label>
+                        <select class="filter-select">
+                            <option value="">指定なし</option>
+                            <option value="tokyo">東京都</option>
+                            <option value="kanagawa">神奈川県</option>
+                            <option value="saitama">埼玉県</option>
+                            <option value="chiba">千葉県</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">趣味</label>
+                        <select class="filter-select">
+                            <option value="">指定なし</option>
+                            <option value="music">音楽</option>
+                            <option value="sports">スポーツ</option>
+                            <option value="travel">旅行</option>
+                            <option value="cooking">料理</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">職業</label>
+                        <select class="filter-select">
+                            <option value="">指定なし</option>
+                            <option value="office">会社員</option>
+                            <option value="freelance">フリーランス</option>
+                            <option value="student">学生</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <!-- Profile Card 1 -->
+                <div class="profile-card">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="プロフィール画像" class="profile-image">
+                    <div class="profile-content">
+                        <h3 class="profile-name">Yuki M.</h3>
+                        <p class="profile-info">26歳 / デザイナー</p>
+                        <div class="profile-tags">
+                            <span class="profile-tag">アート</span>
+                            <span class="profile-tag">写真</span>
+                            <span class="profile-tag">カフェ巡り</span>
+                        </div>
+                        <div class="profile-footer">
+                            <div class="profile-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                渋谷区
+                            </div>
+                            <button class="like-button">
+                                <i class="fas fa-heart"></i>
+                                いいね
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Card 2 -->
+                <div class="profile-card">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="プロフィール画像" class="profile-image">
+                    <div class="profile-content">
+                        <h3 class="profile-name">Mei S.</h3>
+                        <p class="profile-info">29歳 / 会社員</p>
+                        <div class="profile-tags">
+                            <span class="profile-tag">ヨガ</span>
+                            <span class="profile-tag">旅行</span>
+                            <span class="profile-tag">料理</span>
+                        </div>
+                        <div class="profile-footer">
+                            <div class="profile-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                新宿区
+                            </div>
+                            <button class="like-button">
+                                <i class="fas fa-heart"></i>
+                                いいね
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Card 3 -->
+                <div class="profile-card">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="プロフィール画像" class="profile-image">
+                    <div class="profile-content">
+                        <h3 class="profile-name">Hana K.</h3>
+                        <p class="profile-info">31歳 / フリーランス</p>
+                        <div class="profile-tags">
+                            <span class="profile-tag">音楽</span>
+                            <span class="profile-tag">ダンス</span>
+                            <span class="profile-tag">アウトドア</span>
+                        </div>
+                        <div class="profile-footer">
+                            <div class="profile-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                目黒区
+                            </div>
+                            <button class="like-button">
+                                <i class="fas fa-heart"></i>
+                                いいね
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Card 4 -->
+                <div class="profile-card">
+                    <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=800&q=80" alt="プロフィール画像" class="profile-image">
+                    <div class="profile-content">
+                        <h3 class="profile-name">Rin T.</h3>
+                        <p class="profile-info">27歳 / 看護師</p>
+                        <div class="profile-tags">
+                            <span class="profile-tag">映画</span>
+                            <span class="profile-tag">読書</span>
+                            <span class="profile-tag">カフェ巡り</span>
+                        </div>
+                        <div class="profile-footer">
+                            <div class="profile-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                品川区
+                            </div>
+                            <button class="like-button">
+                                <i class="fas fa-heart"></i>
+                                いいね
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // ログイン状態のチェック
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+            updateNavigation(true);
+        }
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+    </script>
+</body>
+</html> 
