@@ -9,42 +9,36 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeNavigation() {
     const menuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
-    const navLinksItems = navLinks.querySelectorAll('.nav-link');
     const body = document.body;
 
-    // オーバーレイ要素の作成
-    const overlay = document.createElement('div');
-    overlay.className = 'mobile-menu-overlay';
-    body.appendChild(overlay);
-
+    // メニューの状態
     let isMenuOpen = false;
 
+    // メニューを開く
     function openMenu() {
         isMenuOpen = true;
         menuButton.classList.add('active');
         navLinks.classList.add('active');
-        overlay.classList.add('active');
         body.classList.add('menu-open');
         
-        // アニメーション用のインデックスを設定
-        navLinksItems.forEach((link, index) => {
-            link.style.setProperty('--index', index);
-            link.style.transitionDelay = `${index * 0.1}s`;
-        });
+        // スライドインアニメーション
+        navLinks.style.transform = 'translateX(0)';
+        navLinks.style.opacity = '1';
     }
 
+    // メニューを閉じる
     function closeMenu() {
         isMenuOpen = false;
         menuButton.classList.remove('active');
         navLinks.classList.remove('active');
-        overlay.classList.remove('active');
         body.classList.remove('menu-open');
-
-        navLinksItems.forEach(link => {
-            link.style.transitionDelay = '0s';
-        });
+        
+        // スライドアウトアニメーション
+        navLinks.style.transform = 'translateX(100%)';
+        navLinks.style.opacity = '0';
     }
 
+    // メニューボタンのクリックイベント
     menuButton.addEventListener('click', () => {
         if (isMenuOpen) {
             closeMenu();
@@ -53,23 +47,25 @@ function initializeNavigation() {
         }
     });
 
-    overlay.addEventListener('click', closeMenu);
-    navLinksItems.forEach(link => link.addEventListener('click', closeMenu));
+    // メニュー項目のクリック時に自動で閉じる
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+        });
+    });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isMenuOpen) {
+    // 画面外クリックで閉じる
+    document.addEventListener('click', (e) => {
+        if (isMenuOpen && !navLinks.contains(e.target) && !menuButton.contains(e.target)) {
             closeMenu();
         }
     });
 
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            if (window.innerWidth > 768 && isMenuOpen) {
-                closeMenu();
-            }
-        }, 250);
+    // ESCキーで閉じる
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isMenuOpen) {
+            closeMenu();
+        }
     });
 }
 

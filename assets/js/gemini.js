@@ -3,12 +3,18 @@ const GEMINI_API_KEY = 'AIzaSyAHCvBba4QeAGOkMteTtGzk0h9vQZk1Udg';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 const GEMINI_VISION_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent';
 
-class GeminiChat {
-    constructor() {
+class ChatCharacter {
+    constructor(name, age, location, interests, personality, imageUrl) {
+        this.name = name;
+        this.age = age;
+        this.location = location;
+        this.interests = interests;
+        this.personality = personality;
+        this.imageUrl = imageUrl;
         this.context = [
             {
                 role: "system",
-                content: "あなたは24歳の女性「さくら」です。優しく親しみやすい性格で、ファッションと音楽が大好きです。趣味は料理とヨガで、休日はカフェ巡りをすることが多いです。会話は自然で温かみのある口調を心がけ、時には可愛らしい絵文字も使います。相手のことを気遣い、共感を大切にしながら会話を楽しみます。"
+                content: `あなたは${age}歳の女性「${name}」です。${personality}。${interests}について話すのが大好きです。会話は自然で温かみのある口調を心がけ、時には可愛らしい絵文字も使います。相手のことを気遣い、共感を大切にしながら会話を楽しみます。`
             }
         ];
     }
@@ -73,13 +79,42 @@ class GeminiChat {
     }
 }
 
-// Geminiチャットのインスタンスを作成
-const geminiChat = new GeminiChat();
+// チャットキャラクターの定義
+const characters = {
+    sakura: new ChatCharacter(
+        "さくら",
+        24,
+        "東京",
+        "ファッション、音楽、カフェ巡り",
+        "明るく社交的で、おしゃれなことが大好き",
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+    ),
+    hana: new ChatCharacter(
+        "はな",
+        22,
+        "大阪",
+        "アート、写真撮影、旅行",
+        "アーティスティックで感性豊か、冒険が好き",
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9"
+    ),
+    yuki: new ChatCharacter(
+        "ゆき",
+        26,
+        "札幌",
+        "読書、お菓子作り、スノーボード",
+        "知的で落ち着いた性格、甘いものが大好き",
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80"
+    )
+};
 
-// チャットUIの初期化
-function initializeGeminiChat() {
-    const geminiTab = document.getElementById('gemini-tab');
-    const chatContainer = geminiTab.querySelector('.gemini-chat');
+let currentCharacter = characters.sakura;
+
+function initializeChat(characterId = 'sakura') {
+    currentCharacter = characters[characterId];
+    const chatContainer = document.querySelector('.chat-messages');
+    if (!chatContainer) return;
+
+    // チャットUIの初期化
     const inputContainer = document.createElement('div');
     inputContainer.className = 'chat-input';
     inputContainer.innerHTML = `
@@ -87,12 +122,11 @@ function initializeGeminiChat() {
             <i class="fas fa-image"></i>
         </button>
         <input type="file" id="image-upload" accept="image/*" style="display: none;">
-        <textarea class="chat-input-field" placeholder="さくらとチャット..." rows="1"></textarea>
+        <textarea class="chat-input-field" placeholder="${currentCharacter.name}とチャット..." rows="1"></textarea>
         <button class="chat-send-button" aria-label="送信">
             <i class="fas fa-paper-plane"></i>
         </button>
     `;
-    chatContainer.appendChild(inputContainer);
 
     const textarea = inputContainer.querySelector('.chat-input-field');
     const sendButton = inputContainer.querySelector('.chat-send-button');
@@ -109,46 +143,39 @@ function initializeGeminiChat() {
     async function sendMessage(message, imageFile = null) {
         if (!message.trim() && !imageFile) return;
 
-        // ユーザーメッセージを表示
         appendMessage(message, true, imageFile);
 
         let imageData = null;
         if (imageFile) {
-            imageData = await geminiChat.processImage(imageFile);
+            imageData = await currentCharacter.processImage(imageFile);
         }
 
-        // AIの応答を取得
-        const response = await geminiChat.sendMessage(message, imageData);
-        
-        // AIの応答を表示
+        const response = await currentCharacter.sendMessage(message, imageData);
         appendMessage(response, false);
     }
 
     // メッセージの表示
     function appendMessage(message, isUser, imageFile = null) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = `gemini-message ${isUser ? 'user' : 'ai'}`;
+        messageDiv.className = `message ${isUser ? 'sent' : 'received'}`;
         
         let content = '';
         if (imageFile) {
             const imageUrl = URL.createObjectURL(imageFile);
-            content += `<img src="${imageUrl}" alt="アップロードされた画像" style="max-width: 200px; margin-bottom: 10px;"><br>`;
+            content += `<img src="${imageUrl}" alt="アップロードされた画像"><br>`;
         }
         content += message;
 
         messageDiv.innerHTML = `
-            <div class="gemini-avatar">
-                ${isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>'}
-            </div>
-            <div class="gemini-content">${content}</div>
+            <div class="message-content">${content}</div>
+            <div class="message-time">${new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}</div>
         `;
 
-        const chatMessages = document.querySelector('.gemini-chat');
-        chatMessages.insertBefore(messageDiv, inputContainer);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    // 送信ボタンのイベントリスナー
+    // イベントリスナーの設定
     sendButton.addEventListener('click', () => {
         const message = textarea.value.trim();
         const imageFile = imageUploadInput.files[0];
@@ -158,7 +185,6 @@ function initializeGeminiChat() {
         imageUploadInput.value = '';
     });
 
-    // Enterキーでの送信
     textarea.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -166,21 +192,23 @@ function initializeGeminiChat() {
         }
     });
 
-    // 画像アップロードボタンのイベントリスナー
     imageUploadButton.addEventListener('click', () => {
         imageUploadInput.click();
     });
 
-    // 画像選択時の処理
     imageUploadInput.addEventListener('change', () => {
         if (imageUploadInput.files[0]) {
-            imageUploadButton.style.color = '#ff1493';
+            imageUploadButton.style.color = 'var(--color-primary)';
         }
     });
 
-    // 初期メッセージを表示
-    appendMessage("はじめまして！私、さくらです💕 よかったら色んなお話しましょ！写真とか見せてくれても嬉しいな😊", false);
+    // 初期メッセージ
+    appendMessage(`はじめまして！${currentCharacter.name}です💕 ${currentCharacter.interests}が大好きなの！よかったらお話ししましょう😊`, false);
 }
 
-// DOMContentLoadedイベントでGeminiチャットを初期化
-document.addEventListener('DOMContentLoaded', initializeGeminiChat); 
+// DOMContentLoadedイベントでチャットを初期化
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const characterId = urlParams.get('character') || 'sakura';
+    initializeChat(characterId);
+}); 
