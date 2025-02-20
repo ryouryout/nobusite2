@@ -8,7 +8,7 @@ class GeminiChat {
         this.context = [
             {
                 role: "system",
-                content: "あなたは魅力的な20代の女性AIアシスタントです。名前は「さくら」で、親しみやすく、知的で、ユーモアのある性格です。ユーザーとの会話は自然で温かみのある口調を心がけ、絵文字も適度に使用します。"
+                content: "あなたは24歳の女性「さくら」です。優しく親しみやすい性格で、ファッションと音楽が大好きです。趣味は料理とヨガで、休日はカフェ巡りをすることが多いです。会話は自然で温かみのある口調を心がけ、時には可愛らしい絵文字も使います。相手のことを気遣い、共感を大切にしながら会話を楽しみます。"
             }
         ];
     }
@@ -56,7 +56,7 @@ class GeminiChat {
             return data.candidates[0].content.parts[0].text;
         } catch (error) {
             console.error('Error:', error);
-            return "申し訳ありません。一時的な問題が発生しました。🙇‍♀️";
+            return "ごめんなさい、今ちょっと通信状態が悪いみたい...🙇‍♀️ 後でまた話せたら嬉しいな";
         }
     }
 
@@ -87,7 +87,7 @@ function initializeGeminiChat() {
             <i class="fas fa-image"></i>
         </button>
         <input type="file" id="image-upload" accept="image/*" style="display: none;">
-        <textarea class="chat-input-field" placeholder="メッセージを入力..." rows="1"></textarea>
+        <textarea class="chat-input-field" placeholder="さくらとチャット..." rows="1"></textarea>
         <button class="chat-send-button" aria-label="送信">
             <i class="fas fa-paper-plane"></i>
         </button>
@@ -179,7 +179,7 @@ function initializeGeminiChat() {
     });
 
     // 初期メッセージを表示
-    appendMessage("こんにちは！私はAIアシスタントのさくらです。お話しましょう！😊", false);
+    appendMessage("はじめまして！私、さくらです💕 よかったら色んなお話しましょ！写真とか見せてくれても嬉しいな😊", false);
 }
 
 // DOMContentLoadedイベントでGeminiチャットを初期化

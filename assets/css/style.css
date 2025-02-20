@@ -306,22 +306,22 @@ body {
 /* Tabs */
 .tabs-container {
     position: sticky;
-    top: var(--header-height);
-    background: var(--color-white);
-    z-index: 10;
-    border-bottom: 1px solid var(--color-gray-200);
-    padding: 0.75rem 1rem;
-    height: var(--tabs-height);
+    top: 60px;
+    background: #fff;
+    z-index: 100;
+    border-bottom: 1px solid #e0e0e0;
+    margin: 0;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .tabs {
     display: flex;
-    gap: 0.5rem;
+    gap: 10px;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    padding: 0 15px;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-bottom: 4px;
 }
 
 .tabs::-webkit-scrollbar {
@@ -329,111 +329,65 @@ body {
 }
 
 .tab {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    background: var(--color-gray-50);
-    color: var(--color-gray-600);
-    border: 1px solid var(--color-gray-200);
-    border-radius: var(--radius-full);
+    gap: 8px;
+    padding: 12px 20px;
+    background: transparent;
+    color: #666;
+    border: none;
+    border-radius: 25px;
     font-weight: 500;
-    font-size: var(--text-sm);
-    white-space: nowrap;
-    transition: all 0.2s ease;
-    min-height: 44px;
+    font-size: 14px;
     cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
 }
 
 .tab i {
-    font-size: 1.1em;
+    font-size: 16px;
+}
+
+.tab-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4081;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
 }
 
 .tab:hover {
-    background: var(--color-gray-100);
-    color: var(--color-primary);
-    border-color: var(--color-gray-300);
+    background: #f5f5f5;
+    color: #333;
 }
 
 .tab.active {
-    background: var(--color-primary);
-    color: var(--color-white);
-    border-color: var(--color-primary);
-    box-shadow: 0 2px 4px rgba(255, 20, 147, 0.2);
+    background: #2196f3;
+    color: white;
 }
 
 .tab-content {
     display: none;
-    animation: fadeIn 0.3s ease;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .tab-content.active {
     display: block;
-}
-
-/* Tab Indicators */
-.tab-indicator {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-}
-
-.tab-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
-    background: var(--color-gray-200);
-    color: var(--color-gray-700);
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.tab.active .tab-badge {
-    background: rgba(255, 255, 255, 0.2);
-    color: var(--color-white);
-}
-
-/* Mobile Optimization */
-@media (max-width: 768px) {
-    .tabs-container {
-        padding: 0.75rem;
-    }
-
-    .tabs {
-        gap: 0.5rem;
-    }
-
-    .tab {
-        padding: 0.625rem 1rem;
-        min-height: 40px;
-    }
-
-    .tab span {
-        font-size: 0.875rem;
-    }
-
-    .tab i {
-        font-size: 1rem;
-    }
-
-    .gemini-content {
-        max-width: 85%;
-    }
+    opacity: 1;
 }
 
 /* Tab Animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(5px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -2526,34 +2480,24 @@ input:checked + .slider:before {
 
 /* Gemini Chat */
 .gemini-chat {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - var(--header-height) - var(--tabs-height));
-    padding: 1rem;
-    gap: 1rem;
-    overflow-y: auto;
+    padding: 15px;
 }
 
 .gemini-welcome {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: var(--color-gray-50);
-    border-radius: var(--radius-lg);
-    margin-bottom: 1rem;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
 }
 
 .gemini-avatar {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: var(--color-primary-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-white);
-    font-size: var(--text-xl);
+    overflow: hidden;
 }
 
 .gemini-message {
