@@ -1,5 +1,11 @@
 // モバイルメニューの制御
 document.addEventListener('DOMContentLoaded', function() {
+    initializeNavigation();
+    initializeChat();
+    initializeScrollBehavior();
+});
+
+function initializeNavigation() {
     const menuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
     const navLinksItems = navLinks.querySelectorAll('.nav-link');
@@ -10,10 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     overlay.className = 'mobile-menu-overlay';
     body.appendChild(overlay);
 
-    // メニューの開閉状態を管理
     let isMenuOpen = false;
 
-    // メニューを開く関数
     function openMenu() {
         isMenuOpen = true;
         menuButton.classList.add('active');
@@ -28,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // メニューを閉じる関数
     function closeMenu() {
         isMenuOpen = false;
         menuButton.classList.remove('active');
@@ -41,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // メニューボタンのクリックイベント
     menuButton.addEventListener('click', () => {
         if (isMenuOpen) {
             closeMenu();
@@ -50,22 +52,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // オーバーレイのクリックイベント
     overlay.addEventListener('click', closeMenu);
+    navLinksItems.forEach(link => link.addEventListener('click', closeMenu));
 
-    // ナビゲーションリンクのクリックイベント
-    navLinksItems.forEach(link => {
-        link.addEventListener('click', closeMenu);
-    });
-
-    // ESCキーでメニューを閉じる
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isMenuOpen) {
             closeMenu();
         }
     });
 
-    // ウィンドウリサイズ時の処理
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
@@ -75,49 +70,149 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 250);
     });
-});
+}
 
-// スクロール時のヘッダー制御
-let lastScrollTop = 0;
-const header = document.querySelector('.header');
-const scrollThreshold = 50;
+function initializeChat() {
+    const textarea = document.querySelector('.chat-input-field');
+    const chatMessages = document.querySelector('.chat-messages');
+    const sendButton = document.querySelector('.chat-send-button');
+    const backButton = document.querySelector('.back-button');
+    const userSelection = document.querySelector('.user-selection');
+    const userCards = document.querySelectorAll('.user-card');
+    const tabs = document.querySelectorAll('.tab');
 
-window.addEventListener('scroll', function() {
-    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (currentScroll > scrollThreshold) {
-        header.classList.add('header-scrolled');
-        
-        if (currentScroll > lastScrollTop) {
-            // 下スクロール時
-            header.classList.add('header-hidden');
-        } else {
-            // 上スクロール時
-            header.classList.remove('header-hidden');
+    if (textarea) {
+        // メッセージ入力欄の自動リサイズ
+        function adjustTextareaHeight() {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
         }
-    } else {
-        header.classList.remove('header-scrolled');
-        header.classList.remove('header-hidden');
+
+        textarea.addEventListener('input', adjustTextareaHeight);
+        textarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // 初期の高さを設定
+        adjustTextareaHeight();
     }
-    
-    lastScrollTop = currentScroll;
-});
 
-// スムーズスクロール
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const headerHeight = document.querySelector('.header').offsetHeight;
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
-            window.scrollTo({
-                top: targetPosition - headerHeight,
-                behavior: 'smooth'
-            });
-        }
+    if (sendButton) {
+        sendButton.addEventListener('click', sendMessage);
+    }
+
+    if (backButton) {
+        backButton.addEventListener('click', () => {
+            userSelection.classList.add('active');
+        });
+    }
+
+    userCards.forEach(card => {
+        card.addEventListener('click', () => {
+            userCards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            userSelection.classList.remove('active');
+            
+            // ユーザー情報の更新
+            updateChatHeader(card);
+        });
     });
-});
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+        });
+    });
+
+    function sendMessage() {
+        const message = textarea.value.trim();
+        if (!message) return;
+
+        const time = new Date().toLocaleTimeString('ja-JP', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+
+        const messageHTML = `
+            <div class="message message-sent">
+                <div class="message-content">
+                    <p>${escapeHTML(message)}</p>
+                </div>
+                <div class="message-time">${time}</div>
+            </div>
+        `;
+
+        chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+        textarea.value = '';
+        adjustTextareaHeight();
+        scrollToBottom();
+    }
+
+    function updateChatHeader(card) {
+        const chatHeader = document.querySelector('.chat-header');
+        const avatar = card.querySelector('.user-avatar').cloneNode(true);
+        const name = card.querySelector('.user-name').textContent;
+        const status = card.querySelector('.user-status').textContent;
+
+        chatHeader.querySelector('.user-avatar').replaceWith(avatar);
+        chatHeader.querySelector('.user-name').textContent = name;
+        chatHeader.querySelector('.user-status').textContent = status;
+    }
+
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+}
+
+function initializeScrollBehavior() {
+    let lastScrollTop = 0;
+    const header = document.querySelector('.header');
+    const scrollThreshold = 50;
+
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (currentScroll > scrollThreshold) {
+            header.classList.add('header-scrolled');
+            
+            if (currentScroll > lastScrollTop) {
+                header.classList.add('header-hidden');
+            } else {
+                header.classList.remove('header-hidden');
+            }
+        } else {
+            header.classList.remove('header-scrolled', 'header-hidden');
+        }
+        
+        lastScrollTop = currentScroll;
+    });
+
+    // スムーズスクロール
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerHeight = header.offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: targetPosition - headerHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
 
 // フォームバリデーション
 document.querySelectorAll('form').forEach(form => {

@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ff1493">
     <title>メッセージ - Nobu Love</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -390,16 +391,36 @@
                 Nobu Love
             </a>
             <nav class="nav-links">
-                <a href="../index.html#features">特徴</a>
-                <a href="../index.html#pricing">料金</a>
-                <a href="matches.html">お相手</a>
-                <a href="messages.html" class="active">メッセージ</a>
-                <a href="events.html">イベント</a>
-                <a href="community.html">コミュニティ</a>
-                <a href="mypage.html">マイページ</a>
-                <a href="safety.html">安全ガイド</a>
+                <a href="../index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>ホーム</span>
+                </a>
+                <a href="matches.html" class="nav-link">
+                    <i class="fas fa-user-friends"></i>
+                    <span>お相手</span>
+                </a>
+                <a href="messages.html" class="nav-link active">
+                    <i class="fas fa-comments"></i>
+                    <span>メッセージ</span>
+                </a>
+                <a href="events.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>イベント</span>
+                </a>
+                <a href="community.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>コミュニティ</span>
+                </a>
+                <a href="mypage.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span>マイページ</span>
+                </a>
+                <a href="safety.html" class="nav-link">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>安全ガイド</span>
+                </a>
             </nav>
-            <button class="mobile-menu-button">
+            <button class="mobile-menu-button" aria-label="メニュー">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -407,99 +428,92 @@
 
     <main class="page-container">
         <div class="tabs">
-            <div class="tab active" data-tab="messages">メッセージ</div>
-            <div class="tab" data-tab="gemini">Gemini</div>
-            <div class="tab" data-tab="likes">いいね</div>
-            <div class="tab" data-tab="matches">マッチ</div>
+            <button class="tab active" data-tab="messages">
+                <i class="fas fa-comments"></i>
+                <span>メッセージ</span>
+            </button>
+            <button class="tab" data-tab="gemini">
+                <i class="fas fa-robot"></i>
+                <span>Gemini</span>
+            </button>
+            <button class="tab" data-tab="likes">
+                <i class="fas fa-heart"></i>
+                <span>いいね</span>
+            </button>
+            <button class="tab" data-tab="matches">
+                <i class="fas fa-user-friends"></i>
+                <span>マッチ</span>
+            </button>
         </div>
 
         <div class="messages-layout">
-            <!-- ユーザー選択画面 -->
             <div class="user-selection">
-                <div class="user-card" data-user="user1">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
-                    <div class="user-info">
-                        <div class="user-name">さくら</div>
-                        <div class="user-status">オンライン</div>
-                    </div>
+                <div class="search-bar">
+                    <input type="search" placeholder="ユーザーを検索..." class="search-input">
                 </div>
-                <div class="user-card" data-user="user2">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="はな" class="user-avatar">
-                    <div class="user-info">
-                        <div class="user-name">はな</div>
-                        <div class="user-status">2時間前</div>
+                <div class="user-list">
+                    <div class="user-card" data-user="user1">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
+                        <div class="user-info">
+                            <div class="user-name">さくら</div>
+                            <div class="user-status">オンライン</div>
+                        </div>
                     </div>
-                </div>
-                <div class="user-card" data-user="gemini">
-                    <div class="user-avatar" style="background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-robot" style="color: var(--color-primary); font-size: 24px;"></i>
+                    <div class="user-card" data-user="user2">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="はな" class="user-avatar">
+                        <div class="user-info">
+                            <div class="user-name">はな</div>
+                            <div class="user-status">2時間前</div>
+                        </div>
                     </div>
-                    <div class="user-info">
-                        <div class="user-name">Gemini</div>
-                        <div class="user-status">AI アシスタント</div>
+                    <div class="user-card" data-user="gemini">
+                        <div class="user-avatar ai-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="user-info">
+                            <div class="user-name">Gemini</div>
+                            <div class="user-status">AI アシスタント</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- チャット画面 -->
             <div class="chat-view">
                 <div class="chat-header">
+                    <button class="back-button" aria-label="戻る">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
                     <div class="user-info">
                         <div class="user-name">さくら</div>
                         <div class="user-status">オンライン</div>
                     </div>
+                    <button class="more-button" aria-label="その他">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
                 </div>
 
                 <div class="chat-messages">
                     <div class="message message-received">
                         <div class="message-content">
-                            こんにちは！プロフィール拝見しました。
+                            <p>こんにちは！</p>
                         </div>
                         <div class="message-time">14:30</div>
                     </div>
                     <div class="message message-sent">
                         <div class="message-content">
-                            はじめまして！ご覧いただきありがとうございます。
+                            <p>はじめまして！よろしくお願いします😊</p>
                         </div>
                         <div class="message-time">14:31</div>
                     </div>
                 </div>
 
                 <div class="chat-input">
-                    <textarea class="chat-input-field" placeholder="メッセージを入力..."></textarea>
-                    <button class="chat-send-button">
-                        <i class="fas fa-paper-plane"></i>
+                    <button class="attachment-button" aria-label="添付">
+                        <i class="fas fa-plus"></i>
                     </button>
-                </div>
-            </div>
-
-            <!-- Gemini チャット画面 -->
-            <div class="chat-view" style="display: none;" id="gemini-chat">
-                <div class="chat-header">
-                    <div class="user-avatar" style="background: var(--color-primary-light); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-robot" style="color: var(--color-primary); font-size: 24px;"></i>
-                    </div>
-                    <div class="user-info">
-                        <div class="user-name">Gemini</div>
-                        <div class="user-status">AI アシスタント</div>
-                    </div>
-                </div>
-
-                <div class="chat-messages gemini-chat">
-                    <div class="gemini-message">
-                        <div class="gemini-avatar">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="gemini-content">
-                            こんにちは！私はGeminiです。どのようなお手伝いができますか？
-                        </div>
-                    </div>
-                </div>
-
-                <div class="chat-input">
-                    <textarea class="chat-input-field" placeholder="Geminiに質問する..."></textarea>
-                    <button class="chat-send-button">
+                    <textarea class="chat-input-field" placeholder="メッセージを入力..." rows="1"></textarea>
+                    <button class="chat-send-button" aria-label="送信">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -509,109 +523,32 @@
 
     <script src="../assets/js/main.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // ログイン状態のチェック
-            checkLoginStatus();
+        // メッセージ入力欄の自動リサイズ
+        const textarea = document.querySelector('.chat-input-field');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
 
-            // タブ切り替え
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    // タブに応じた表示切り替え
-                    const tabName = tab.dataset.tab;
-                    if (tabName === 'gemini') {
-                        document.querySelector('#gemini-chat').style.display = 'flex';
-                        document.querySelector('.chat-view:not(#gemini-chat)').style.display = 'none';
-                    } else {
-                        document.querySelector('#gemini-chat').style.display = 'none';
-                        document.querySelector('.chat-view:not(#gemini-chat)').style.display = 'flex';
-                    }
-                });
+        // 戻るボタンの処理
+        document.querySelector('.back-button').addEventListener('click', () => {
+            document.querySelector('.user-selection').classList.add('active');
+        });
+
+        // ユーザーカード選択時の処理
+        document.querySelectorAll('.user-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.user-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                document.querySelector('.user-selection').classList.remove('active');
             });
+        });
 
-            // ユーザーカード選択
-            const userCards = document.querySelectorAll('.user-card');
-            userCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    userCards.forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-
-                    // モバイル時のユーザー選択画面の非表示
-                    if (window.innerWidth <= 768) {
-                        document.querySelector('.user-selection').classList.remove('active');
-                    }
-
-                    // Geminiチャット切り替え
-                    const userId = card.dataset.user;
-                    if (userId === 'gemini') {
-                        document.querySelector('#gemini-chat').style.display = 'flex';
-                        document.querySelector('.chat-view:not(#gemini-chat)').style.display = 'none';
-                        
-                        // タブも切り替え
-                        tabs.forEach(t => t.classList.remove('active'));
-                        document.querySelector('[data-tab="gemini"]').classList.add('active');
-                    } else {
-                        document.querySelector('#gemini-chat').style.display = 'none';
-                        document.querySelector('.chat-view:not(#gemini-chat)').style.display = 'flex';
-                    }
-                });
-            });
-
-            // メッセージ送信処理
-            document.querySelectorAll('.chat-send-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const input = button.previousElementSibling;
-                    const message = input.value.trim();
-                    if (message) {
-                        const chatMessages = button.closest('.chat-view').querySelector('.chat-messages');
-                        const time = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
-                        
-                        if (button.closest('#gemini-chat')) {
-                            // Geminiチャットの場合
-                            chatMessages.innerHTML += `
-                                <div class="gemini-message user">
-                                    <div class="gemini-content">${message}</div>
-                                </div>
-                            `;
-                            // AIの応答をシミュレート
-                            setTimeout(() => {
-                                chatMessages.innerHTML += `
-                                    <div class="gemini-message">
-                                        <div class="gemini-avatar">
-                                            <i class="fas fa-robot"></i>
-                                        </div>
-                                        <div class="gemini-content">申し訳ありません。現在、AIアシスタント機能は開発中です。</div>
-                                    </div>
-                                `;
-                                chatMessages.scrollTop = chatMessages.scrollHeight;
-                            }, 1000);
-                        } else {
-                            // 通常のチャットの場合
-                            chatMessages.innerHTML += `
-                                <div class="message message-sent">
-                                    <div class="message-content">${message}</div>
-                                    <div class="message-time">${time}</div>
-                                </div>
-                            `;
-                        }
-                        
-                        input.value = '';
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    }
-                });
-            });
-
-            // Enterキーでメッセージ送信
-            document.querySelectorAll('.chat-input-field').forEach(input => {
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        input.nextElementSibling.click();
-                    }
-                });
+        // タブ切り替えの処理
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
             });
         });
     </script>
