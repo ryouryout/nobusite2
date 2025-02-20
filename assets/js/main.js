@@ -467,4 +467,63 @@ function initializePageSpecificBehavior() {
             break;
         // 他のページ固有の初期化処理を追加
     }
-} 
+}
+
+function initializeMobileMenu() {
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const navLinks = document.querySelector('.nav-links');
+    let isMenuOpen = false;
+
+    if (!mobileMenuButton || !navLinks) return;
+
+    function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        navLinks.classList.toggle('active');
+        mobileMenuButton.innerHTML = isMenuOpen ? 
+            '<i class="fas fa-times"></i>' : 
+            '<i class="fas fa-bars"></i>';
+        document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+
+        if (isMenuOpen) {
+            // メニューが開いたときのアニメーション
+            const links = navLinks.querySelectorAll('a');
+            links.forEach((link, index) => {
+                link.style.animation = `slideIn 0.3s ease forwards ${index * 0.1}s`;
+            });
+        }
+    }
+
+    // メニューボタンのクリックイベント
+    mobileMenuButton.addEventListener('click', toggleMenu);
+
+    // メニュー項目のクリックイベント
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (isMenuOpen) {
+                toggleMenu();
+            }
+        });
+    });
+
+    // 画面外クリックでメニューを閉じる
+    document.addEventListener('click', (e) => {
+        if (isMenuOpen && 
+            !navLinks.contains(e.target) && 
+            !mobileMenuButton.contains(e.target)) {
+            toggleMenu();
+        }
+    });
+
+    // 画面サイズ変更時の処理
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && isMenuOpen) {
+            toggleMenu();
+        }
+    });
+}
+
+// ページ読み込み時に初期化
+document.addEventListener('DOMContentLoaded', () => {
+    initializeMobileMenu();
+    updateNavigation();
+}); 
