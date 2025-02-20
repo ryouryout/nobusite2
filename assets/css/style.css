@@ -139,7 +139,7 @@ h6 { font-size: var(--text-base); }
     left: 0;
     right: 0;
     height: var(--header-height);
-    background: var(--color-bg);
+    background: var(--color-white);
     box-shadow: var(--shadow-nav);
     z-index: 1000;
 }
@@ -153,8 +153,6 @@ h6 { font-size: var(--text-base); }
 }
 
 .logo {
-    display: flex;
-    align-items: center;
     font-family: 'Dancing Script', cursive;
     font-size: 1.8rem;
     font-weight: 700;
@@ -163,23 +161,18 @@ h6 { font-size: var(--text-base); }
     z-index: 1002;
 }
 
-.logo i {
-    margin-right: 0.5rem;
-    font-size: 1.5rem;
-}
-
 .nav-links {
     position: fixed;
     top: var(--header-height);
     left: -100%;
     width: 100%;
     height: calc(100vh - var(--header-height));
-    background: var(--color-bg);
+    background: var(--color-white);
     padding: 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    transition: left 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     overflow-y: auto;
     z-index: 1000;
 }
@@ -1112,83 +1105,24 @@ input:checked + .slider:before {
     }
 
     .nav-link {
-        padding: 1rem;
         width: 100%;
-        text-align: left;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--nav-link-color);
-        background: var(--header-bg);
-        border: 1px solid rgba(0, 0, 0, 0.1);
+        justify-content: flex-start;
+        padding: 1rem;
+        margin: 0;
         border-radius: 8px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        font-weight: 500;
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-
-    .nav-links.active .nav-link {
-        opacity: 1;
-        transform: translateX(0);
     }
 
     .nav-link i {
+        margin-right: 1rem;
         width: 24px;
         text-align: center;
-        font-size: 1.2rem;
-        color: var(--nav-link-active);
-    }
-
-    .nav-link span {
-        flex: 1;
-    }
-
-    .nav-link:hover {
-        background: rgba(52, 152, 219, 0.1);
-        color: var(--nav-link-active);
-        transform: translateX(5px);
-    }
-
-    .nav-link.active {
-        background: var(--nav-link-active);
-        color: var(--header-bg);
-        border-color: var(--nav-link-active);
-    }
-
-    .nav-link.active i {
-        color: var(--header-bg);
-    }
-
-    .mobile-menu-button {
-        display: block;
-        background: none;
-        border: none;
-        color: var(--nav-link-color);
-        font-size: 1.5rem;
-        padding: 0.5rem;
-        cursor: pointer;
-        z-index: 1001;
-        transition: all 0.3s ease;
-    }
-
-    .mobile-menu-button:hover {
-        color: var(--nav-link-active);
-    }
-
-    .mobile-menu-button.active {
-        color: var(--nav-link-active);
-        transform: rotate(90deg);
     }
 
     .btn-login,
     .btn-register,
     .btn-logout {
         width: 100%;
-        justify-content: center;
         margin-top: 0.5rem;
-        padding: 1rem;
     }
 
     .btn-login {
