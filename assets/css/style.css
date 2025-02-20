@@ -1,9 +1,9 @@
 /* Design System */
 :root {
     /* Color System */
-    --color-primary: #FF1493;
-    --color-primary-light: #FF69B4;
-    --color-primary-dark: #C71585;
+    --color-primary: #ff1493;
+    --color-primary-light: #ff69b4;
+    --color-primary-dark: #c71585;
     --color-secondary: #4A90E2;
     --color-accent: #FFB6C1;
     --color-success: #2ECC71;
@@ -12,7 +12,7 @@
     --color-info: #3498DB;
     
     /* Neutral Colors */
-    --color-white: #FFFFFF;
+    --color-white: #ffffff;
     --color-gray-50: #F9FAFB;
     --color-gray-100: #F3F4F6;
     --color-gray-200: #E5E7EB;
@@ -144,31 +144,30 @@ h6 { font-size: var(--text-base); }
     left: 0;
     right: 0;
     height: var(--header-height);
-    background: var(--nav-bg);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: var(--color-white);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
     z-index: 1000;
 }
 
 .header-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 1rem;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
 }
 
 .logo {
     font-family: 'Dancing Script', cursive;
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--nav-active);
+    color: var(--color-primary);
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    z-index: 1002;
 }
 
 .logo i {
@@ -181,7 +180,7 @@ h6 { font-size: var(--text-base); }
     left: -100%;
     width: 100%;
     height: calc(100vh - var(--header-height));
-    background: var(--nav-bg);
+    background: var(--color-white);
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -198,13 +197,14 @@ h6 { font-size: var(--text-base); }
 .nav-link {
     width: 100%;
     padding: 1rem;
-    color: var(--nav-text);
+    color: var(--color-black);
     text-decoration: none;
     font-weight: 500;
     border-radius: 8px;
-    background: #f8f9fa;
     display: flex;
     align-items: center;
+    gap: 1rem;
+    background: #f8f9fa;
     transition: all 0.3s ease;
     opacity: 0;
     transform: translateX(-20px);
@@ -213,31 +213,29 @@ h6 { font-size: var(--text-base); }
 .nav-links.active .nav-link {
     opacity: 1;
     transform: translateX(0);
-    transition-delay: calc(var(--index) * 0.1s);
 }
 
 .nav-link i {
     width: 24px;
-    margin-right: 1rem;
-    color: var(--nav-active);
+    color: var(--color-primary);
 }
 
 .nav-link:hover {
-    background: var(--nav-hover);
-    color: white;
+    background: var(--color-primary-light);
+    color: var(--color-white);
 }
 
 .nav-link:hover i {
-    color: white;
+    color: var(--color-white);
 }
 
 .nav-link.active {
-    background: var(--nav-active);
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-white);
 }
 
 .nav-link.active i {
-    color: white;
+    color: var(--color-white);
 }
 
 /* オーバーレイ */
@@ -264,12 +262,11 @@ h6 { font-size: var(--text-base); }
     display: block;
     background: none;
     border: none;
-    color: var(--nav-active);
+    color: var(--color-primary);
     font-size: 1.5rem;
     padding: 0.5rem;
     cursor: pointer;
     z-index: 1001;
-    transition: transform 0.3s ease;
 }
 
 .mobile-menu-button.active {
@@ -1531,4 +1528,216 @@ input:checked + .slider:before {
     position: relative;
     z-index: 2;
     color: var(--color-gray-900);
+}
+
+/* メッセージ部分のUI改善 */
+.messages-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.message-card {
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.message-info {
+    flex: 1;
+}
+
+.message-name {
+    font-weight: 600;
+    color: var(--color-black);
+}
+
+.message-time {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.message-content {
+    color: var(--color-black);
+    line-height: 1.5;
+}
+
+/* タブのデザイン改善 */
+.tabs {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 1rem;
+    background: var(--color-white);
+    padding: 0.5rem;
+    border-radius: 8px;
+    gap: 0.5rem;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    padding: 0.75rem 1.5rem;
+    white-space: nowrap;
+    color: #666;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.tab.active {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+@media (max-width: 768px) {
+    .messages-container {
+        padding: 0.5rem;
+    }
+
+    .message-card {
+        margin-bottom: 0.5rem;
+    }
+
+    .tabs {
+        padding: 0.25rem;
+    }
+
+    .tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* トップページのUI改善 */
+.hero {
+    min-height: 100vh;
+    padding: 120px 0 80px;
+    background: linear-gradient(135deg, rgba(255, 20, 147, 0.1), rgba(255, 105, 180, 0.2));
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--color-black);
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.features {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.feature-card {
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--color-white);
+    font-size: 1.5rem;
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-black);
+}
+
+.feature-description {
+    color: #666;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 100px 0 60px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .feature-card {
+        padding: 1.5rem;
+    }
 } 
