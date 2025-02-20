@@ -2,74 +2,73 @@
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const navLinks = document.querySelector('.nav-links');
+    const body = document.body;
     let isMenuOpen = false;
 
+    // オーバーレイ要素の作成
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-menu-overlay';
+    body.appendChild(overlay);
+
+    function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        navLinks.classList.toggle('active');
+        mobileMenuButton.classList.toggle('active');
+        overlay.classList.toggle('active');
+        body.classList.toggle('menu-open');
+        
+        // メニューアイコンの切り替え
+        mobileMenuButton.innerHTML = isMenuOpen ? 
+            '<i class="fas fa-times"></i>' : 
+            '<i class="fas fa-bars"></i>';
+    }
+
+    function closeMenu() {
+        if (isMenuOpen) {
+            isMenuOpen = false;
+            navLinks.classList.remove('active');
+            mobileMenuButton.classList.remove('active');
+            overlay.classList.remove('active');
+            body.classList.remove('menu-open');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+    }
+
     if (mobileMenuButton) {
-        mobileMenuButton.addEventListener('click', function() {
-            isMenuOpen = !isMenuOpen;
-            navLinks.classList.toggle('active');
-            mobileMenuButton.innerHTML = isMenuOpen ? 
-                '<i class="fas fa-times"></i>' : 
-                '<i class="fas fa-bars"></i>';
-            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-            
-            // メニューが開いたときのアニメーション
-            if (isMenuOpen) {
-                navLinks.querySelectorAll('a').forEach((link, index) => {
-                    link.style.animation = `slideIn 0.3s ease forwards ${index * 0.1}s`;
-                });
-            } else {
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.style.animation = '';
-                });
-            }
+        mobileMenuButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMenu();
         });
 
         // メニュー項目をクリックしたらメニューを閉じる
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = '';
-                isMenuOpen = false;
-                
-                // アニメーションをリセット
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.style.animation = '';
-                });
-            });
+            link.addEventListener('click', closeMenu);
         });
 
+        // オーバーレイをクリックしたらメニューを閉じる
+        overlay.addEventListener('click', closeMenu);
+
         // 画面の外側をクリックしたらメニューを閉じる
-        document.addEventListener('click', function(event) {
-            if (isMenuOpen && !event.target.closest('.nav-links') && !event.target.closest('.mobile-menu-button')) {
-                navLinks.classList.remove('active');
-                mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = '';
-                isMenuOpen = false;
-                
-                // アニメーションをリセット
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.style.animation = '';
-                });
+        document.addEventListener('click', function(e) {
+            if (isMenuOpen && !e.target.closest('.nav-links') && !e.target.closest('.mobile-menu-button')) {
+                closeMenu();
+            }
+        });
+
+        // ESCキーでメニューを閉じる
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMenu();
+            }
+        });
+
+        // 画面サイズが変更された時にメニューを閉じる
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && isMenuOpen) {
+                closeMenu();
             }
         });
     }
-
-    // 画面サイズが変更された時にメニューを閉じる
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768 && isMenuOpen) {
-            navLinks.classList.remove('active');
-            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-            document.body.style.overflow = '';
-            isMenuOpen = false;
-            
-            // アニメーションをリセット
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.style.animation = '';
-            });
-        }
-    });
 });
 
 // スクロール時のヘッダー制御
