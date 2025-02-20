@@ -14,19 +14,57 @@ function initializeNavigation() {
 
     if (mobileMenuButton) {
         mobileMenuButton.addEventListener('click', () => {
-            userSelection.classList.toggle('active');
             mobileMenuButton.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            if (userSelection) {
+                userSelection.classList.toggle('active');
+            }
         });
     }
 
-    // 現在のページのナビゲーションリンクをアクティブに
+    // 現在のページのナビゲーションリンクをアクティブにする
     const currentPath = window.location.pathname;
-    const navLinkElements = document.querySelectorAll('.nav-link');
-    navLinkElements.forEach(link => {
-        if (link.getAttribute('href').includes(currentPath)) {
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
             link.classList.add('active');
         }
     });
+
+    // タブ切り替えの実装
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // アクティブなタブを更新
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // タブコンテンツを切り替え
+            const targetId = tab.getAttribute('data-tab');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === targetId) {
+                    content.classList.add('active');
+                }
+            });
+
+            // URLパラメータを更新
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('tab', targetId);
+            history.replaceState(null, '', `${window.location.pathname}?${urlParams.toString()}`);
+        });
+    });
+
+    // URLパラメータからタブを復元
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+        const tab = document.querySelector(`[data-tab="${tabParam}"]`);
+        if (tab) {
+            tab.click();
+        }
+    }
 }
 
 // チャット初期化

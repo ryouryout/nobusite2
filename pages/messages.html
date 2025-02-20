@@ -381,6 +381,25 @@
                 color: #64748b;
             }
         }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 4px 8px;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--color-gray-400);
+            border-radius: 50%;
+            animation: typing 1s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
     </style>
 </head>
 <body>
@@ -403,240 +422,105 @@
                     <i class="fas fa-comments"></i>
                     <span>メッセージ</span>
                 </a>
-                <a href="events.html" class="nav-link">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>イベント</span>
-                </a>
-                <a href="community.html" class="nav-link">
-                    <i class="fas fa-users"></i>
-                    <span>コミュニティ</span>
-                </a>
                 <a href="mypage.html" class="nav-link">
                     <i class="fas fa-user"></i>
                     <span>マイページ</span>
                 </a>
-                <a href="safety.html" class="nav-link">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>安全ガイド</span>
-                </a>
             </nav>
-            <button class="mobile-menu-button" aria-label="メニュー">
+            <button class="mobile-menu-button">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </header>
 
-    <main class="page-container">
+    <div class="page-container">
         <div class="tabs-container">
             <div class="tabs">
-                <button class="tab active" data-tab="messages-tab">
+                <button class="tab active" data-tab="messages">
                     <i class="fas fa-comments"></i>
                     <span>メッセージ</span>
-                    <div class="tab-badge">3</div>
                 </button>
-                <button class="tab" data-tab="gemini-tab">
+                <button class="tab" data-tab="likes">
                     <i class="fas fa-heart"></i>
-                    <span>さくら</span>
-                </button>
-                <button class="tab" data-tab="likes-tab">
-                    <i class="fas fa-star"></i>
                     <span>いいね</span>
-                    <div class="tab-badge">12</div>
+                    <span class="badge">12</span>
                 </button>
-                <button class="tab" data-tab="matches-tab">
+                <button class="tab" data-tab="matches">
                     <i class="fas fa-user-friends"></i>
                     <span>マッチ</span>
-                    <div class="tab-badge">5</div>
+                    <span class="badge">5</span>
                 </button>
             </div>
         </div>
 
-        <div id="messages-tab" class="tab-content active">
+        <div id="messages" class="tab-content active">
             <div class="messages-layout">
                 <div class="user-selection">
-                    <div class="search-bar">
-                        <input type="search" placeholder="ユーザーを検索..." class="search-input">
-                    </div>
-                    <div class="user-list">
-                        <div class="user-card" data-user="user1">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
-                            <div class="user-info">
-                                <div class="user-name">さくら</div>
-                                <div class="user-status">オンライン</div>
-                            </div>
-                        </div>
-                        <div class="user-card" data-user="user2">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="はな" class="user-avatar">
-                            <div class="user-info">
-                                <div class="user-name">はな</div>
-                                <div class="user-status">2時間前</div>
-                            </div>
-                        </div>
-                        <div class="user-card" data-user="gemini">
-                            <div class="user-avatar ai-avatar">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                            <div class="user-info">
-                                <div class="user-name">Gemini</div>
-                                <div class="user-status">AI アシスタント</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="chat-view">
-                    <div class="chat-header">
-                        <button class="back-button" aria-label="戻る">
-                            <i class="fas fa-arrow-left"></i>
-                        </button>
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="user-avatar">
+                    <div class="user-card active" data-user="mei">
+                        <img src="../assets/images/mei.jpg" alt="めい" class="user-avatar">
                         <div class="user-info">
-                            <div class="user-name">さくら</div>
+                            <div class="user-name">めい</div>
                             <div class="user-status">オンライン</div>
                         </div>
-                        <button class="more-button" aria-label="その他">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
                     </div>
-
-                    <div class="chat-messages">
-                        <div class="message message-received">
-                            <div class="message-content">
-                                <p>こんにちは！</p>
-                            </div>
-                            <div class="message-time">14:30</div>
-                        </div>
-                        <div class="message message-sent">
-                            <div class="message-content">
-                                <p>はじめまして！よろしくお願いします😊</p>
-                            </div>
-                            <div class="message-time">14:31</div>
+                    <div class="user-card" data-user="yuki">
+                        <img src="../assets/images/yuki.jpg" alt="ゆき" class="user-avatar">
+                        <div class="user-info">
+                            <div class="user-name">ゆき</div>
+                            <div class="user-status">2時間前</div>
                         </div>
                     </div>
+                    <div class="user-card" data-user="hana">
+                        <img src="../assets/images/hana.jpg" alt="はな" class="user-avatar">
+                        <div class="user-info">
+                            <div class="user-name">はな</div>
+                            <div class="user-status">3時間前</div>
+                        </div>
+                    </div>
+                    <div class="user-card" data-user="rin">
+                        <img src="../assets/images/rin.jpg" alt="りん" class="user-avatar">
+                        <div class="user-info">
+                            <div class="user-name">りん</div>
+                            <div class="user-status">オフライン</div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- メッセージはJavaScriptで動的に追加されます -->
+                    </div>
                     <div class="chat-input">
-                        <button class="attachment-button" aria-label="添付">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <textarea class="chat-input-field" placeholder="メッセージを入力..." rows="1"></textarea>
-                        <button class="chat-send-button" aria-label="送信">
+                        <textarea id="messageInput" placeholder="メッセージを入力..." class="chat-input-field"></textarea>
+                        <button id="sendButton" class="chat-send-button">
                             <i class="fas fa-paper-plane"></i>
+                            <span>送信</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="gemini-tab" class="tab-content">
-            <div class="gemini-chat">
-                <div class="gemini-welcome">
-                    <div class="gemini-avatar">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="さくら" class="avatar-image">
-                    </div>
-                    <div class="gemini-message">
-                        <h3>さくら</h3>
-                        <p>24歳 / 東京在住 / ファッション・音楽好き</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="likes-tab" class="tab-content">
+        <div id="likes" class="tab-content">
             <div class="likes-container">
-                <h3>いいね一覧</h3>
-                <div class="likes-grid">
-                    <!-- Likes content will be dynamically loaded -->
+                <h3>いいねした人</h3>
+                <div class="user-grid">
+                    <!-- いいねしたユーザー一覧がここに表示されます -->
                 </div>
             </div>
         </div>
 
-        <div id="matches-tab" class="tab-content">
+        <div id="matches" class="tab-content">
             <div class="matches-container">
-                <h3>新しいマッチ</h3>
-                <div class="matches-grid">
-                    <!-- Matches content will be dynamically loaded -->
+                <h3>マッチした人</h3>
+                <div class="user-grid">
+                    <!-- マッチしたユーザー一覧がここに表示されます -->
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/gemini.js"></script>
-    <script>
-        // メッセージ入力欄の自動リサイズ
-        document.querySelectorAll('.chat-input-field').forEach(textarea => {
-            textarea.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-            });
-        });
-
-        // 戻るボタンの処理
-        document.querySelector('.back-button')?.addEventListener('click', () => {
-            document.querySelector('.user-selection').classList.add('active');
-        });
-
-        // ユーザーカード選択時の処理
-        document.querySelectorAll('.user-card').forEach(card => {
-            card.addEventListener('click', () => {
-                document.querySelectorAll('.user-card').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                document.querySelector('.user-selection').classList.remove('active');
-            });
-        });
-
-        // タブ切り替えの処理
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const targetId = tab.getAttribute('data-tab');
-                
-                // タブの切り替え
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                // コンテンツの切り替え
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                    content.style.display = 'none';
-                });
-                
-                const targetContent = document.getElementById(targetId);
-                if (targetContent) {
-                    targetContent.style.display = 'block';
-                    setTimeout(() => {
-                        targetContent.classList.add('active');
-                    }, 50);
-                }
-
-                // スクロール位置の調整
-                const tabsContainer = document.querySelector('.tabs');
-                const tabLeft = tab.offsetLeft;
-                const tabWidth = tab.offsetWidth;
-                const containerWidth = tabsContainer.offsetWidth;
-                const scrollLeft = tabsContainer.scrollLeft;
-                
-                const targetScrollLeft = tabLeft - (containerWidth - tabWidth) / 2;
-                tabsContainer.scrollTo({
-                    left: targetScrollLeft,
-                    behavior: 'smooth'
-                });
-
-                // URLパラメータの更新
-                const urlParams = new URLSearchParams(window.location.search);
-                urlParams.set('tab', targetId);
-                history.replaceState(null, '', `${window.location.pathname}?${urlParams.toString()}`);
-            });
-        });
-
-        // URLパラメータからタブを復元
-        const urlParams = new URLSearchParams(window.location.search);
-        const tabParam = urlParams.get('tab');
-        if (tabParam) {
-            const tab = document.querySelector(`[data-tab="${tabParam}"]`);
-            if (tab) {
-                tab.click();
-            }
-        }
-    </script>
+    <script src="../assets/js/chat.js"></script>
 </body>
 </html> 
