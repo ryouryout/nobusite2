@@ -12,6 +12,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 '<i class="fas fa-times"></i>' : 
                 '<i class="fas fa-bars"></i>';
             document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+            
+            // メニューが開いたときのアニメーション
+            if (isMenuOpen) {
+                navLinks.querySelectorAll('a').forEach((link, index) => {
+                    link.style.animation = `slideIn 0.3s ease forwards ${index * 0.1}s`;
+                });
+            } else {
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.style.animation = '';
+                });
+            }
         });
 
         // メニュー項目をクリックしたらメニューを閉じる
@@ -21,6 +32,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = '';
                 isMenuOpen = false;
+                
+                // アニメーションをリセット
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.style.animation = '';
+                });
             });
         });
 
@@ -31,6 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = '';
                 isMenuOpen = false;
+                
+                // アニメーションをリセット
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.style.animation = '';
+                });
             }
         });
     }
@@ -42,6 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
             document.body.style.overflow = '';
             isMenuOpen = false;
+            
+            // アニメーションをリセット
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.style.animation = '';
+            });
         }
     });
 });
@@ -263,25 +289,25 @@ function updateNavigation(isInPagesDir = false) {
     
     if (isLoggedIn) {
         navLinks.innerHTML = `
-            <a href="${prefix}matches.html"><i class="fas fa-users"></i>お相手</a>
-            <a href="${prefix}messages.html"><i class="fas fa-comments"></i>メッセージ</a>
-            <a href="${prefix}events.html"><i class="fas fa-calendar"></i>イベント</a>
-            <a href="${prefix}community.html"><i class="fas fa-globe"></i>コミュニティ</a>
-            <a href="${prefix}search.html"><i class="fas fa-search"></i>検索</a>
-            <a href="${prefix}mypage.html"><i class="fas fa-user"></i>マイページ</a>
-            <a href="${prefix}safety.html"><i class="fas fa-shield-alt"></i>安全ガイド</a>
-            <a href="#" class="btn btn-primary" onclick="handleLogout(event)"><i class="fas fa-sign-out-alt"></i>ログアウト</a>
+            <a href="${prefix}matches.html" class="nav-link"><i class="fas fa-users"></i><span>お相手</span></a>
+            <a href="${prefix}messages.html" class="nav-link"><i class="fas fa-comments"></i><span>メッセージ</span></a>
+            <a href="${prefix}events.html" class="nav-link"><i class="fas fa-calendar"></i><span>イベント</span></a>
+            <a href="${prefix}community.html" class="nav-link"><i class="fas fa-globe"></i><span>コミュニティ</span></a>
+            <a href="${prefix}search.html" class="nav-link"><i class="fas fa-search"></i><span>検索</span></a>
+            <a href="${prefix}mypage.html" class="nav-link"><i class="fas fa-user"></i><span>マイページ</span></a>
+            <a href="${prefix}safety.html" class="nav-link"><i class="fas fa-shield-alt"></i><span>安全ガイド</span></a>
+            <a href="#" class="nav-link btn-logout" onclick="handleLogout(event)"><i class="fas fa-sign-out-alt"></i><span>ログアウト</span></a>
         `;
     } else {
         const featuresLink = isInPagesDir ? '../index.html#features' : '#features';
         const pricingLink = isInPagesDir ? '../index.html#pricing' : '#pricing';
         
         navLinks.innerHTML = `
-            <a href="${featuresLink}"><i class="fas fa-star"></i>特徴</a>
-            <a href="${pricingLink}"><i class="fas fa-tags"></i>料金</a>
-            <a href="${prefix}safety.html"><i class="fas fa-shield-alt"></i>安全ガイド</a>
-            <a href="${prefix}login.html" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>ログイン</a>
-            <a href="${prefix}register.html" class="btn btn-secondary"><i class="fas fa-user-plus"></i>新規登録</a>
+            <a href="${featuresLink}" class="nav-link"><i class="fas fa-star"></i><span>特徴</span></a>
+            <a href="${pricingLink}" class="nav-link"><i class="fas fa-tags"></i><span>料金</span></a>
+            <a href="${prefix}safety.html" class="nav-link"><i class="fas fa-shield-alt"></i><span>安全ガイド</span></a>
+            <a href="${prefix}login.html" class="nav-link btn-login"><i class="fas fa-sign-in-alt"></i><span>ログイン</span></a>
+            <a href="${prefix}register.html" class="nav-link btn-register"><i class="fas fa-user-plus"></i><span>新規登録</span></a>
         `;
     }
 
@@ -355,6 +381,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 '<i class="fas fa-times"></i>' : 
                 '<i class="fas fa-bars"></i>';
             document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+            
+            // メニューが開いたときのアニメーション
+            if (isMenuOpen) {
+                navLinks.querySelectorAll('a').forEach((link, index) => {
+                    link.style.animation = `slideIn 0.3s ease forwards ${index * 0.1}s`;
+                });
+            } else {
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.style.animation = '';
+                });
+            }
         });
 
         // メニュー項目をクリックしたらメニューを閉じる
@@ -364,6 +401,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = '';
                 isMenuOpen = false;
+                
+                // アニメーションをリセット
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.style.animation = '';
+                });
             });
         });
 
@@ -374,6 +416,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = '';
                 isMenuOpen = false;
+                
+                // アニメーションをリセット
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.style.animation = '';
+                });
             }
         });
     }
@@ -385,6 +432,11 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
             document.body.style.overflow = '';
             isMenuOpen = false;
+            
+            // アニメーションをリセット
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.style.animation = '';
+            });
         }
     });
 });
