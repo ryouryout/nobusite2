@@ -7,15 +7,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
         .page-container {
             padding: 0;
+            width: 100%;
             max-width: 100%;
             background: #fff;
+            min-height: 100vh;
+            position: relative;
         }
 
         .message-list {
             padding-top: 60px;
-            padding-bottom: 60px;
+            padding-bottom: 70px;
+            background: #fff;
         }
 
         .message-item {
@@ -25,6 +35,7 @@
             border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
             transition: background-color 0.2s;
+            background: #fff;
         }
 
         .message-item:active {
@@ -55,6 +66,8 @@
             font-size: 16px;
             font-weight: 600;
             color: #333;
+            display: flex;
+            align-items: center;
         }
 
         .message-time {
@@ -83,23 +96,24 @@
             background: #ccc;
         }
 
-        @media (min-width: 768px) {
-            .message-list {
-                max-width: 600px;
-                margin: 0 auto;
-                border-left: 1px solid #f0f0f0;
-                border-right: 1px solid #f0f0f0;
-            }
-        }
-
         .header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
+            height: 60px;
             background: #fff;
             z-index: 1000;
             border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
         }
 
         .nav-links {
@@ -112,6 +126,7 @@
             justify-content: space-around;
             padding: 8px 0;
             border-top: 1px solid #f0f0f0;
+            z-index: 1000;
         }
 
         .nav-link {
@@ -131,13 +146,30 @@
         .nav-link.active {
             color: #ff6b6b;
         }
+
+        @media (min-width: 768px) {
+            .page-container {
+                max-width: 600px;
+                margin: 0 auto;
+                border-left: 1px solid #f0f0f0;
+                border-right: 1px solid #f0f0f0;
+            }
+
+            .header {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .nav-links {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
     </style>
 </head>
 <body>
     <header class="header">
-        <div class="header-container">
-            <h1>メッセージ</h1>
-        </div>
+        <h1>メッセージ</h1>
     </header>
 
     <div class="page-container">
@@ -209,6 +241,14 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // 画像の読み込みエラーを処理
+        document.querySelectorAll('.avatar').forEach(img => {
+            img.onerror = function() {
+                this.src = '../assets/images/default-avatar.jpg';
+            };
+        });
+
+        // メッセージアイテムのクリックイベント
         document.querySelectorAll('.message-item').forEach(item => {
             item.addEventListener('click', () => {
                 const userId = item.getAttribute('data-user');
